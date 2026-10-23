@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI, cloud and product engineering services for international businesses.">
+  <title>YourCompany | AI & Technology Delivery</title>
+  <style>
+:root {
+  --ink: #14253d;
+  --muted: #5b6b80;
+  --blue: #2359d6;
+  --teal: #19b6a4;
+  --pale: #f3f7fc;
+  --line: #dfe7f1;
+  --dark: #0b1730;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  color: var(--ink);
+  line-height: 1.65;
+}
+a { color: inherit; text-decoration: none; }
+header {
+  position: sticky; top: 0; z-index: 5;
+  background: white; border-bottom: 1px solid var(--line);
+  min-height: 72px; padding: 14px max(20px, calc((100% - 1120px)/2));
+  display: flex; align-items: center; justify-content: space-between; gap: 22px;
+}
+.logo { font-size: 1.25rem; font-weight: 850; letter-spacing: -.04em; }
+.logo span { color: var(--blue); }
+nav { display: flex; gap: 24px; color: #46566d; font-weight: 650; }
+nav a:hover { color: var(--blue); }
+
+.button {
+  display: inline-block; border: 1px solid var(--blue);
+  border-radius: 9px; background: var(--blue); color: white;
+  padding: 12px 18px; font: inherit; font-weight: 750; cursor: pointer;
+}
+.button:hover { background: #163d9b; }
+.button.outline { background: white; color: var(--ink); border-color: #cbd7e6; }
+.button.light { background: white; color: var(--blue); border-color: white; }
+
+.hero {
+  padding: 76px max(20px, calc((100% - 1120px)/2));
+  background: linear-gradient(125deg, #f4f8ff, white 65%, #e9f8f5);
+  display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center;
+}
+.eyebrow { color: var(--blue); font-size: .78rem; font-weight: 850; letter-spacing: .12em; }
+h1 { font-size: clamp(2.5rem, 5vw, 4.2rem); line-height: 1.08; letter-spacing: -.055em; }
+h1 span { color: var(--blue); }
+h2 { font-size: clamp(1.9rem, 3vw, 2.8rem); line-height: 1.15; letter-spacing: -.04em; }
+.lead { color: var(--muted); font-size: 1.12rem; max-width: 720px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 15px; }
+.small { font-size: .85rem; color: var(--muted); }
+
+.visual {
+  padding: 25px; border-radius: 22px; background: var(--dark); color: white;
+  box-shadow: 0 22px 55px #14253d22;
+}
+.visual-label { font-size: .8rem; color: #9cb5d6; margin-bottom: 18px; font-weight: 800; }
+.visual-card { padding: 17px; margin: 12px 0; border: 1px solid #34445e; border-radius: 13px; background: #172746; }
+.visual-card h3 { margin: 4px 0; }
+.visual-card p { margin: 0; color: #b6c5dc; font-size: .92rem; }
+.number { color: #55d9c6; font-weight: 850; }
+
+.section { padding: 72px max(20px, calc((100% - 1120px)/2)); }
+.tinted { background: var(--pale); }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+.card { padding: 24px; background: white; border: 1px solid var(--line); border-radius: 15px; }
+.card p { color: var(--muted); }
+.card a { color: var(--blue); font-weight: 750; }
+.icon { width: 42px; height: 42px; display: grid; place-items: center; background: #edf3ff; color: var(--blue); border-radius: 11px; font-size: 1.25rem; font-weight: 850; }
+.cta { background: var(--dark); color: white; padding: 48px max(20px, calc((100% - 1120px)/2)); display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+.cta p { color: #c4d0e4; margin-bottom: 0; }
+
+.page-hero { padding: 60px max(20px, calc((100% - 1120px)/2)); background: linear-gradient(125deg, #f3f7ff, #effaf8); }
+.service { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; padding: 32px 0; border-bottom: 1px solid var(--line); }
+.service-detail { background: var(--pale); border-radius: 14px; padding: 20px 25px; }
+li { margin: 9px 0; }
+.process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px; }
+.process > div { border-top: 2px solid var(--line); padding-top: 17px; }
+.process strong { color: var(--blue); }
+.process p { color: var(--muted); }
+
+.contact-form { max-width: 760px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 30px; }
+.contact-form label { display: flex; flex-direction: column; gap: 7px; font-weight: 750; }
+.contact-form input, .contact-form select, .contact-form textarea {
+  width: 100%; padding: 12px; font: inherit; border: 1px solid #cbd7e6;
+  border-radius: 8px; background: white; color: var(--ink);
+}
+.contact-form .wide { grid-column: 1 / -1; }
+.contact-form button { justify-self: start; }
+footer { background: #08142b; color: white; padding: 35px max(20px, calc((100% - 1120px)/2)); }
+footer p { color: #aebbd0; }
+.footer-logo { color: white; }
+.copyright { border-top: 1px solid #293852; padding-top: 16px; font-size: .8rem; }
+
+@media (max-width: 800px) {
+  header { flex-wrap: wrap; }
+  nav { order: 3; width: 100%; justify-content: space-between; gap: 10px; font-size: .9rem; }
+  .hero, .service { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .process { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .cards, .process, .contact-form { grid-template-columns: 1fr; }
+  .contact-form .wide { grid-column: auto; }
+  .cta { align-items: flex-start; flex-direction: column; }
+  .section { padding-top: 52px; padding-bottom: 52px; }
+  h1 { font-size: 2.55rem; }
+}
+
+/* Keep section targets visible below the sticky navigation. */
+[id] { scroll-margin-top: 160px; }
+@media (max-width: 400px) { [id] { scroll-margin-top: 220px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#home">YourCompany<span>.</span></a>
+  <nav aria-label="Main navigation">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#process">Our Process</a>
+  </nav>
+  <a class="button" href="#contact">Discuss a Project ↗</a>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <p class="eyebrow">AI · CLOUD · PRODUCT ENGINEERING</p>
+    <h1>Build better technology.<br><span>Move business forward.</span></h1>
+    <p class="lead">
+      Your specialist technology delivery partner for software companies,
+      implementation partners and growing businesses that need reliable
+      engineering without building every capability in-house.
+    </p>
+    <div class="actions">
+      <a class="button" href="#contact">Let's Discuss Your Project</a>
+      <a class="button outline" href="#services">Explore Services</a>
+    </div>
+    <p class="small">India-based delivery · International clients · Outcome-led execution</p>
+  </div>
+
+  <div class="visual">
+    <div class="visual-label">YOUR TECHNOLOGY DELIVERY PARTNER</div>
+    <div class="visual-card">
+      <span class="number">01</span>
+      <h3>Connect your systems</h3>
+      <p>ERP, CRM, APIs and business data.</p>
+    </div>
+    <div class="visual-card">
+      <span class="number">02</span>
+      <h3>Automate your workflows</h3>
+      <p>Practical AI with human oversight.</p>
+    </div>
+    <div class="visual-card">
+      <span class="number">03</span>
+      <h3>Ship better software</h3>
+      <p>Cloud, product engineering and QA.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">WHAT WE DO</p>
+  <h2>Specialist execution for work that matters.</h2>
+  <p class="lead">We help teams deliver projects, solve operational bottlenecks and build useful technology.</p>
+
+  <div class="cards">
+    <article class="card">
+      <div class="icon">↔</div>
+      <h3>Enterprise Integration</h3>
+      <p>Connect enterprise systems, migrate data, build APIs and reduce manual handoffs.</p>
+      <a href="#integration">Explore integration →</a>
+    </article>
+    <article class="card">
+      <div class="icon">✳</div>
+      <h3>AI Workflow Automation</h3>
+      <p>Automate document processing, internal knowledge search and repetitive workflows.</p>
+      <a href="#ai">Explore AI services →</a>
+    </article>
+    <article class="card">
+      <div class="icon">⌘</div>
+      <h3>Cloud & Product Engineering</h3>
+      <p>Support AWS cloud projects, SaaS features, DevOps and software quality.</p>
+      <a href="#cloud">Explore engineering →</a>
+    </article>
+  </div>
+</section>
+
+<section class="section tinted">
+  <p class="eyebrow">WHO WE SERVE</p>
+  <h2>A flexible delivery partner for growing teams.</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Technology & implementation partners</h3>
+      <p>Extend delivery capacity for integration, migration, testing and custom development.</p>
+    </article>
+    <article class="card">
+      <h3>Mid-sized businesses</h3>
+      <p>Improve business processes through practical automation and connected systems.</p>
+    </article>
+    <article class="card">
+      <h3>SaaS product companies</h3>
+      <p>Add engineering capacity for product features, integrations, AI and QA automation.</p>
+    </article>
+  </div>
+</section>
+
+<section class="cta">
+  <div>
+    <h2>Start with one measurable problem.</h2>
+    <p>Define a focused project, validate the solution and expand based on results.</p>
+  </div>
+  <a class="button light" href="#contact">Start a Conversation ↗</a>
+</section>
+
+<section class="page-hero" id="services">
+  <p class="eyebrow">OUR SERVICES</p>
+  <h1>Flexible delivery.<br><span>Clear accountability.</span></h1>
+  <p class="lead">From a focused pilot to ongoing engineering support, we deliver defined technology outcomes with transparent scope and milestones.</p>
+</section>
+
+<section class="section">
+  <div class="service">
+    <div>
+      <p class="eyebrow">01 / INTEGRATION</p>
+      <h2 id="integration">Enterprise Integration & Data</h2>
+      <p>Help business systems communicate reliably and make operational data more useful.</p>
+    </div>
+    <div class="service-detail">
+      <ul>
+        <li>ERP, CRM and ecommerce integrations</li>
+        <li>API development and third-party connectors</li>
+        <li>Data migration, cleanup and validation</li>
+        <li>Reporting and reconciliation pipelines</li>
+        <li>SAP ecosystem implementation support</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="service">
+    <div>
+      <p class="eyebrow">02 / APPLIED AI</p>
+      <h2 id="ai">AI Workflow Automation</h2>
+      <p>Use AI to reduce repetitive work while retaining appropriate human review and control.</p>
+    </div>
+    <div class="service-detail">
+      <ul>
+        <li>Invoice and purchase-order document extraction</li>
+        <li>Internal knowledge assistants and semantic search</li>
+        <li>AI summaries and exception detection</li>
+        <li>Workflow routing and task automation</li>
+        <li>AI evaluation, testing and monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="service">
+    <div>
+      <p class="eyebrow">03 / CLOUD</p>
+      <h2 id="cloud">AWS Cloud & DevOps</h2>
+      <p>Improve cloud foundations, software deployment and operational reliability.</p>
+    </div>
+    <div class="service-detail">
+      <ul>
+        <li>Cloud readiness and migration support</li>
+        <li>CI/CD pipelines and infrastructure as code</li>
+        <li>Monitoring, reliability and security improvements</li>
+        <li>Cloud cost review and optimisation</li>
+        <li>Data engineering and cloud-native applications</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="service">
+    <div>
+      <p class="eyebrow">04 / SOFTWARE</p>
+      <h2>Product Engineering & QA</h2>
+      <p>Help product teams ship improvements without adding unnecessary delivery overhead.</p>
+    </div>
+    <div class="service-detail">
+      <ul>
+        <li>SaaS feature development and integrations</li>
+        <li>Automated regression testing</li>
+        <li>Legacy application modernisation</li>
+        <li>Backend services and data pipelines</li>
+        <li>Release support and technical documentation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section tinted">
+  <p class="eyebrow">HOW WE ENGAGE</p>
+  <h2 id="process">Start small. Expand on evidence.</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Paid Discovery</h3>
+      <p>Define the business problem, architecture, risks, scope and success criteria.</p>
+    </article>
+    <article class="card">
+      <h3>Fixed-Scope Pilot</h3>
+      <p>Deliver one clearly defined use case with agreed milestones and acceptance tests.</p>
+    </article>
+    <article class="card">
+      <h3>Ongoing Engineering</h3>
+      <p>Provide recurring delivery capacity for product teams and implementation partners.</p>
+    </article>
+  </div>
+  <p class="small">Illustrative project budgets: discovery $1,500–$4,000; integration or automation pilot $5,000–$15,000; AI or product engineering project $10,000–$25,000+. Final pricing depends on scope and risk; these are not quotations or verified market averages.</p>
+</section>
+
+<section class="section">
+  <p class="eyebrow">OUR DELIVERY PROCESS</p>
+  <h2>From brief to business outcome.</h2>
+  <div class="process">
+    <div><strong>01</strong><h3>Discover</h3><p>Understand the need, systems and constraints.</p></div>
+    <div><strong>02</strong><h3>Define</h3><p>Agree scope, owners, milestones and acceptance.</p></div>
+    <div><strong>03</strong><h3>Deliver</h3><p>Build, test and review in visible increments.</p></div>
+    <div><strong>04</strong><h3>Handover</h3><p>Document the solution and support expectations.</p></div>
+  </div>
+</section>
+
+<section class="section tinted">
+  <p class="eyebrow">RESPONSIBLE DELIVERY</p>
+  <h2>Security and clarity from day one.</h2>
+  <div class="cards">
+    <article class="card"><h3>Controlled access</h3><p>Use client-approved environments and least-privilege access.</p></article>
+    <article class="card"><h3>Clear ownership</h3><p>Document confidentiality, IP ownership and subcontracting terms.</p></article>
+    <article class="card"><h3>Responsible AI</h3><p>Do not use client data with AI tools without explicit approval. Validate privacy and security requirements for each project.</p></article>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <p class="eyebrow">LET'S TALK</p>
+  <h2>Tell us about your project.</h2>
+  <p class="lead">Share your requirements and we can arrange a focused discovery conversation.</p>
+
+  <form class="contact-form" action="mailto:hello@yourcompany.com" method="post" enctype="text/plain">
+    <label>Name<input type="text" name="Name" required placeholder="Your name"></label>
+    <label>Work email<input type="email" name="Email" required placeholder="you@company.com"></label>
+    <label>Company<input type="text" name="Company" placeholder="Company name"></label>
+    <label>Service required
+      <select name="Service">
+        <option>Enterprise integration</option>
+        <option>AI workflow automation</option>
+        <option>AWS cloud and DevOps</option>
+        <option>Product engineering and QA</option>
+        <option>Delivery partnership</option>
+        <option>Not sure yet</option>
+      </select>
+    </label>
+    <label class="wide">Project details<textarea name="Project details" rows="5" placeholder="Describe the business problem, systems involved and expected timeline."></textarea></label>
+    <button class="button" type="submit">Prepare Enquiry ↗</button>
+    <p class="small wide">Demo form: this opens your default email application. Connect a form handler or CRM before launching the production website.</p>
+  </form>
+</section>
+</main>
+
+<footer>
+  <a class="logo footer-logo" href="#home">YourCompany<span>.</span></a>
+  <p>AI and technology delivery from India, built around outcomes.</p>
+  <a href="mailto:hello@yourcompany.com">hello@yourcompany.com</a>
+  <p class="copyright">© 2026 YourCompany. All rights reserved.</p>
+</footer>
+</body>
+</html>
