@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FactoryOS – AI Quotation &amp; Risk Workflow (MVP)</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#14181f;--mu:#5d6675;--bd:#e1e5ea;--ac:#0f5ef7;--acs:#e8f0ff;--hi:#c62828;--his:#fdeaea;--me:#b26a00;--mes:#fff3dd;--lo:#2e7d32;--los:#e6f4e7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1217;--card:#181d25;--tx:#eceff4;--mu:#9aa4b2;--bd:#2a313c;--ac:#6ea0ff;--acs:#1b2a47;--hi:#ff8a80;--his:#3a1d1d;--me:#ffcc80;--mes:#3a2d14;--lo:#81c784;--los:#1b3320}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:21px;margin:0}h2{font-size:16px;margin:0 0 10px}.sub{color:var(--mu);font-size:13px;margin-top:2px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--acs);color:var(--ac)}
+.steps{display:flex;gap:6px;margin:12px 0;overflow-x:auto}
+.steps button{flex:1;min-width:120px;border:1px solid var(--bd);background:var(--card);color:var(--mu);padding:10px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;text-align:left}
+.steps button.on{border-color:var(--ac);color:var(--ac);background:var(--acs)}
+.steps small{display:block;font-weight:400;font-size:11px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px}
+textarea{width:100%;min-height:210px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);padding:10px;font:13px/1.5 ui-monospace,Menlo,monospace;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 14px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer}
+.btn.p{background:var(--ac);border-color:var(--ac);color:#fff}.btn:disabled{opacity:.5}
+.msg{font-size:13px;color:var(--mu)}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px;min-width:760px}
+th,td{padding:8px 8px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}th{color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kp div{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}.kp b{display:block;font-size:19px}.kp span{font-size:12px;color:var(--mu)}
+ul{margin:0;padding-left:18px}li{margin:3px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.sev{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-block}
+.High{background:var(--his);color:var(--hi)}.Medium{background:var(--mes);color:var(--me)}.Low{background:var(--los);color:var(--lo)}
+.mu{color:var(--mu);font-size:12px}.hid{display:none}
+input[type=range]{width:160px}
+.foot{font-size:12px;color:var(--mu);margin-top:16px}.bar{height:6px;border-radius:3px;background:var(--ac);opacity:.7;margin-bottom:2px}.gb{position:relative;height:16px;min-width:300px;background:var(--bg);border-radius:4px}.gb i{position:absolute;top:2px;bottom:2px;border-radius:3px;background:var(--ac);opacity:.75}.gb i.cr{background:var(--hi);opacity:1}.st{font-size:11px;color:var(--mu)}
+body{background:radial-gradient(1100px 380px at 50% -120px,var(--acs),transparent),var(--bg)}
+.top{background:linear-gradient(135deg,#0b3fbf,#0f5ef7 55%,#18b6d6);color:#fff;padding:22px;border-radius:16px;box-shadow:0 8px 24px rgba(15,94,247,.25)}
+.top .sub{color:rgba(255,255,255,.88)}.top .pill{background:rgba(255,255,255,.22);color:#fff}
+h1{font-size:23px;letter-spacing:-.01em}
+.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0;margin:12px 0}
+.steps button{border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.06);transition:.15s}.steps button:hover{transform:translateY(-1px)}.steps button.on{box-shadow:0 4px 14px rgba(15,94,247,.2)}
+.card{border-radius:14px;box-shadow:0 1px 3px rgba(20,24,31,.07)}
+.kp div{border-radius:12px;border-left:4px solid var(--ac);box-shadow:0 1px 3px rgba(20,24,31,.06)}
+.btn{border-radius:10px;transition:.15s}.btn.p{box-shadow:0 2px 8px rgba(15,94,247,.3)}.btn:hover{filter:brightness(.96)}
+tbody tr:hover{background:var(--acs)}th{background:var(--bg)}
+.nav{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:14px}.dg .card{margin:0}.dc.ok{border-color:var(--lo)}.dh{display:flex;gap:10px;align-items:center}.dh>div{flex:1}.di{font-size:24px}label.btn{display:inline-block}
+.chat{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:10px 0}.bub{padding:9px 12px;border-radius:12px;max-width:90%;font-size:14px}.bub.u{align-self:flex-end;background:var(--ac);color:#fff}.bub.a{align-self:flex-start;background:var(--bg);border:1px solid var(--bd)}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}.chip:hover{background:var(--acs)}.in{flex:1;min-width:180px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);padding:9px 12px;font:inherit}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}.how div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;font-size:13px;color:var(--mu)}.how b{display:block;color:var(--tx);margin-bottom:2px;font-size:14px}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:7px}@keyframes sp{to{transform:rotate(360deg)}}
+@media print{.steps,.nav,.row,.top .pill,.how{display:none}section.hid{display:block!important}body{background:#fff}.top{box-shadow:none}.card{box-shadow:none;break-inside:avoid}}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}.pg label{display:flex;flex-direction:column;gap:4px}.pg .in{min-width:0}
+</style></head><body><div class="w"><div class="card"><a href="./index.html#factoryos" style="color:#93c5fd">← NexaSource AI</a><h2>FactoryOS · Interactive manufacturing demo</h2><p>Explore with sample data, then review example quotations, costs, risks, schedules and purchase bills. This demo does not generate live AI results. Uploaded company tables stay in this browser; use sample data to explore.</p><a class="btn" href="sample-company-data.zip" download>Download sample company data</a></div>
+<div class="top"><div><h1>FactoryOS · Quotation &amp; Risk Workflow</h1><div class="sub">AI reads the enquiry, drafts the quote and flags project risks. A human reviews and approves.</div></div><span class="pill">Sample-data demo</span></div>
+
+<div class="steps" id="steps">
+<button data-s="5" class="on">📁 Company data<small>Your knowledge base</small></button>
+<button data-s="6">🧾 Purchase<small>AI bill inward</small></button>
+<button data-s="0">1 · Enquiry<small>Paste or load documents</small></button>
+<button data-s="1">2 · Quotation<small>Module 1 · review-ready</small></button>
+<button data-s="2">3 · Risk register<small>Module 2 · before commitment</small></button><button data-s="3">4 · Cost plan<small>Module 3 · estimate</small></button><button data-s="4">5 · Schedule<small>Module 4 · execution plan</small></button></div>
+
+<section id="s5">
+<div class="card"><h2>Company data · your knowledge base</h2><div class="mu">Upload your own history (CSV, Excel or JSON). Quotations, risks, costs and schedules are generated from this data, so the more you add, the sharper they get. Data stays in this browser.</div></div>
+<div class="kp" id="dk"></div>
+<div class="dg" id="dg"></div>
+<div class="card"><h2>What your data already tells us</h2><ul id="di"></ul></div>
+<div class="card"><h2>🤖 Ask your data</h2><div class="mu">Ask about your quotations, costs, customers and invoices. Answers use only the company data loaded above.</div><div class="chips" id="chips"></div><div class="chat" id="chat"></div><div class="row"><input disabled title="Use the sample quick questions below" class="in" id="cq" placeholder="e.g. Which product category has the best win rate?"><button class="btn p" id="cs" disabled>Live chat unavailable</button></div></div>
+<div class="row"><button class="btn p" id="dnext">Continue to enquiry →</button><button class="btn" id="dsample">Load sample company data</button><button class="btn" id="dclear">Clear all</button><span class="msg" id="dmsg"></span></div></section>
+<section id="s6" class="hid">
+<div class="card"><h2>🧾 Purchase bills · AI inward</h2><div class="mu">Upload a supplier bill as PDF, Excel, photo or handwritten scan. AI reads it, maps the vendor and materials, records the inward and drafts the purchase entry for your approval. Approved bills update your company data.</div>
+<div class="row"><label class="btn p">Live bill upload unavailable<input type="file" hidden id="pf" disabled multiple accept=".pdf,.xlsx,.xls,.csv,image/*"></label><button class="btn" id="psmp">Use sample handwritten bill</button><span class="msg" id="pmsg"></span></div><div class="st" id="pfn" style="margin-top:6px"></div></div>
+<div id="prv"></div>
+<div class="card"><h2>Purchase register</h2><div class="sc"><table><thead><tr><th>GRN</th><th>Bill no.</th><th>Vendor</th><th>Date</th><th class="n">Amount</th><th>Inward</th><th>Status</th></tr></thead><tbody id="preg"></tbody></table></div></div>
+</section>
+<section id="s0" class="hid"><div class="how"><div><b>① Paste an enquiry</b>Use the sample RFQ or paste your own text.</div><div><b>② Analyse</b>AI drafts the quote, risks, cost plan and schedule.</div><div><b>③ Review</b>Step through the tabs, adjust margin and what-ifs, then approve.</div></div><div class="card"><h2>Customer enquiry / BOQ text</h2><div class="mu" id="dchip" style="margin-bottom:8px"></div>
+<textarea id="inp"></textarea>
+<div class="row"><button class="btn p" id="run" disabled title="Live AI is not enabled in this public demo">Live AI unavailable</button><button class="btn" id="demo">Load demo result</button><button class="btn" id="reset">Reset sample</button><span class="msg" id="msg"></span></div>
+<div class="foot">“Analyse with AI” sends the text to Claude and builds the quotation and risk register live. “Load demo result” shows a pre-computed example instantly. In the full product, PDFs, drawings and Excel BOQs are ingested automatically.</div></div></section>
+
+<section id="s1" class="hid">
+<div class="kp" id="kp"></div>
+<div class="card"><h2 id="qt">Draft quotation</h2><div class="mu" id="qm"></div>
+<div class="sc"><table><thead><tr><th>#</th><th>Item &amp; specification</th><th>Matched product</th><th class="n">Qty</th><th class="n">Material</th><th class="n">Labour</th><th class="n">Engg.</th><th class="n">Install</th><th class="n">Line total</th><th>OK</th></tr></thead><tbody id="qb"></tbody></table></div>
+<div class="row"><label class="mu">Margin <input type="range" id="mg" min="0" max="40" value="18"> <b id="mgv">18%</b></label><span class="msg" id="tot"></span></div></div>
+<div class="two"><div class="card"><h2>Clarifications needed</h2><ul id="cl"></ul></div><div class="card"><h2>Assumptions made</h2><ul id="as"></ul></div></div>
+<div class="row"><button class="btn p" id="appr">Approve quotation</button><span class="msg" id="am"></span></div></section>
+
+<section id="s2" class="hid">
+<div class="kp" id="rk"></div>
+<div class="card"><h2>Project-risk register</h2><div class="row" style="margin:0 0 10px"><select id="fl" class="btn"><option>All</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+<div class="sc"><table><thead><tr><th>ID</th><th>Risk</th><th>Category</th><th>Severity</th><th>Possible impact</th><th>Recommended mitigation</th></tr></thead><tbody id="rb"></tbody></table></div></div></section>
+<section id="s3" class="hid">
+<div class="kp" id="ck"></div>
+<div class="card"><h2>Project cost estimate</h2><div class="mu">Cost heads, assumptions and cost-risk indicators. Contingency is adjustable.</div>
+<div class="sc"><table><thead><tr><th>Cost head</th><th>Basis</th><th class="n">Amount</th><th>Share</th><th>Assumption</th><th>Cost risk</th></tr></thead><tbody id="cb"></tbody></table></div>
+<div class="row"><label class="mu">Contingency <input type="range" id="cg" min="0" max="15" value="6"> <b id="cgv">6%</b></label></div></div>
+<div class="card" id="cn"></div></section>
+<section id="s4" class="hid">
+<div class="kp" id="sk"></div>
+<div class="card"><h2>Draft execution schedule</h2><div class="mu">Activities, dependencies and critical path (red). Durations in working days from order confirmation.</div>
+<div class="row"><label class="mu">What-if: delay <select id="ws" class="btn"></select> by <input type="range" id="wd" min="0" max="20" value="0"> <b id="wdv">0 d</b></label></div>
+<div class="sc"><table><thead><tr><th>ID</th><th>Activity</th><th class="n">Dur</th><th class="n">Start–End</th><th>Depends on</th><th>Timeline</th></tr></thead><tbody id="sb"></tbody></table></div></div>
+<div class="two"><div class="card"><h2>Milestones</h2><ul id="ms"></ul></div><div class="card"><h2>Bottlenecks and dependencies</h2><ul id="bn"></ul></div></div>
+<div class="foot">Draft for project-team validation. Durations are estimates.</div></section>
+<div class="foot">Prototype with illustrative rates. All outputs are drafts for human review before issue to the customer.</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const SAMPLE=`From: purchase@sunrisepumps.example
+Subject: RFQ – Storage & material-handling set-up, new Peenya plant
+
+Hi team, please quote for the following (drawing rev B attached, BOQ in Excel):
+1. Heavy-duty pallet racking – 12 bays, each 2700 x 1100 x 5000 mm, 4 levels, ~1500 kg per level. Powder coated.
+2. Mezzanine floor – approx 120 sqm, chequered plate flooring, staircase and 2 m wide goods lift opening. Live load as per standard.
+3. Roller conveyor – 18 m, custom width 850 mm, with one 90° curve.
+4. Safety railing / machine guarding – around 60 m, yellow RAL 1023.
+Site will be ready by 15th of next month. Need installation included. Please share delivery timeline and warranty.`;
+const DEMO={customer:"Sunrise Pumps Pvt. Ltd.",project:"Storage & material-handling set-up, Peenya plant",
+items:[
+{item:"Heavy-duty pallet racking, 12 bays",dims:"2700×1100×5000 mm, 4 levels, 1500 kg/level",spec:"MS, powder coated",product:"HD-PR-5000 racking system",qty:12,mat:41500,lab:6200,eng:2800,ins:5400},
+{item:"Mezzanine floor incl. staircase",dims:"≈120 sqm, chequered plate",spec:"Live load not stated",product:"MZ-200 structural mezzanine",qty:120,mat:3650,lab:720,eng:410,ins:680},
+{item:"Roller conveyor with 90° curve",dims:"18 m × 850 mm width",spec:"Custom width; load not stated",product:"RC-Custom (non-standard)",qty:18,mat:9800,lab:1900,eng:1500,ins:1400},
+{item:"Safety railing / machine guarding",dims:"60 m",spec:"RAL 1023 yellow",product:"SG-Rail-1100",qty:60,mat:1450,lab:260,eng:90,ins:310}],
+clar:["Design live load for mezzanine (kg/sqm) and goods-lift capacity are not specified.","Conveyor: product weight, speed and drive/motor scope?","Drawing rev B and Excel BOQ referenced but not provided – confirm quantities match.","Floor flatness/slab thickness and anchor-bolt permissions at site?","Is the goods-lift itself in our scope or only the opening?"],
+assum:["Standard IS 800 design; live load assumed 500 kg/sqm for mezzanine.","Conveyor unpowered gravity rollers; motors excluded.","Installation in a single shift, ground-level access for cranes.","Prices valid 30 days; GST at 18% extra.","Delivery 8–10 weeks from drawing approval."],
+tasks:[
+{id:"A1",name:"Load basis closure and drawing approval",stage:"Design",dur:7,dep:[],note:"Customer inputs needed"},
+{id:"A2",name:"Detailed engineering and shop drawings",stage:"Design",dur:8,dep:["A1"],note:""},
+{id:"P1",name:"Steel and plate procurement",stage:"Procurement",dur:10,dep:["A1"],note:"Ordered on approved load basis"},
+{id:"P2",name:"Custom rollers and bearings procurement",stage:"Procurement",dur:20,dep:["A2"],note:"Single-source, 850 mm width"},
+{id:"P3",name:"Fasteners, anchors and coating material",stage:"Procurement",dur:8,dep:["A2"],note:""},
+{id:"F1",name:"Racking fabrication",stage:"Production",dur:14,dep:["A2","P1"],note:""},
+{id:"F2",name:"Mezzanine fabrication",stage:"Production",dur:18,dep:["A2","P1"],note:""},
+{id:"F3",name:"Conveyor frame fabrication and assembly",stage:"Production",dur:12,dep:["A2","P1","P2"],note:"Needs custom rollers"},
+{id:"F4",name:"Railing fabrication",stage:"Production",dur:6,dep:["A2","P1"],note:""},
+{id:"C1",name:"Powder coating",stage:"Production",dur:6,dep:["F1","F2","F4","P3"],note:"Shared coating line"},
+{id:"Q1",name:"Quality inspection and dispatch release",stage:"Quality",dur:3,dep:["C1","F3"],note:"Dimensional and weld checks"},
+{id:"T1",name:"Transport to site",stage:"Installation",dur:3,dep:["Q1"],note:"Over-length loads"},
+{id:"I1",name:"Site readiness and civil sign-off",stage:"Installation",dur:3,dep:["A1"],note:"Customer dependency"},
+{id:"I2",name:"Racking installation",stage:"Installation",dur:8,dep:["T1","I1"],note:""},
+{id:"I3",name:"Mezzanine erection",stage:"Installation",dur:12,dep:["T1","I1"],note:"Crane access needed"},
+{id:"I4",name:"Conveyor and railing installation",stage:"Installation",dur:6,dep:["I2"],note:"Same crew as racking"},
+{id:"H1",name:"Load test, commissioning and handover",stage:"Handover",dur:4,dep:["I2","I3","I4"],note:""}],
+miles:[{name:"Design frozen",after:"A2"},{name:"All materials received",after:"P2"},{name:"Dispatch released",after:"Q1"},{name:"Installation complete",after:"I4"},{name:"Handover",after:"H1"}],
+bott:["Custom conveyor rollers (20 d lead) drive the critical path and cannot be ordered until engineering is done.","A single installation crew serialises racking and conveyor work.","Site readiness is a customer dependency; a slip idles the crew.","About 14 weeks from order against the customer’s site-ready date next month: agree phased dispatch, racking first."],
+cost:[
+{head:"Structural steel and plates",basis:"≈14 t MS @ ₹66k/t incl. 7% wastage",amt:920000,assump:"Ex-stockist rates, current month",risk:"High",note:"≈45% of cost; a 5% price swing ≈ ₹46k"},
+{head:"Bought-out components",basis:"Rollers, bearings, anchors, fasteners, rail fittings",amt:279400,assump:"Vendor quotes valid 15 days",risk:"Medium",note:"Custom 850 mm rollers are single-source"},
+{head:"Fabrication and powder coating",basis:"Cutting, welding, shop labour, coating",amt:210600,assump:"Single shift, in-house capacity available",risk:"Low",note:""},
+{head:"Engineering effort",basis:"Design, drawings, structural checks",amt:115200,assump:"One revision cycle included",risk:"Medium",note:"Load basis still pending"},
+{head:"Electrical and associated systems",basis:"Mezzanine lighting, conveyor e-stops, earthing",amt:85000,assump:"HVAC and ventilation excluded",risk:"Medium",note:"Not in customer BOQ or draft quote"},
+{head:"Transportation",basis:"≈6 trucks incl. over-length for 5 m uprights",amt:72000,assump:"Single dispatch to site",risk:"Low",note:""},
+{head:"Installation",basis:"Crew, cranes, anchoring",amt:190200,assump:"Site ready and ground-level crane access",risk:"Medium",note:"Idle-day cost if site is late"},
+{head:"Testing and commissioning",basis:"Load test, safety check, handover",amt:30000,assump:"Customer witness in one visit",risk:"Low",note:""},
+{head:"Project-specific provisions",basis:"Steel escalation, custom conveyor engineering",amt:65000,assump:"Linked to High risks R01–R03",risk:"High",note:""}],
+risks:[
+{t:"Mezzanine live load unspecified",c:"Specification",s:"High",i:"Structural redesign after order; rework of ~15–20% steel cost",m:"Get written load basis before quote validity; add price-variation clause"},
+{t:"Custom 850 mm conveyor width with curve",c:"Customisation",s:"High",i:"No standard rollers; 3–4 extra weeks lead time and engineering hours",m:"Confirm vendor lead time now; add a 15% engineering contingency"},
+{t:"Site ready date vs 8–10 week lead time",c:"Schedule",s:"High",i:"Customer expects delivery near site-ready date; likely delay penalties",m:"Reset delivery expectations in writing; offer phased racking-first dispatch"},
+{t:"Steel price volatility",c:"Procurement",s:"Medium",i:"Material is ~65% of quote value; 5% swing hits margin",m:"Short validity (15 days) and a steel-index clause; early bulk booking"},
+{t:"Drawing rev B / BOQ mismatch",c:"Scope gap",s:"Medium",i:"Missing items or extra scope absorbed by us",m:"Run line-by-line drawing-to-BOQ reconciliation before approval"},
+{t:"Installation site readiness",c:"Site coordination",s:"Medium",i:"Idle crew days, re-mobilisation cost",m:"Pre-installation site checklist; civil sign-off before dispatch"},
+{t:"Goods-lift interface ownership unclear",c:"Scope gap",s:"Low",i:"Dispute over responsibility at handover",m:"State lift as excluded; clarify opening-only scope"}]};
+const $=id=>document.getElementById(id);let D=null,ok={};
+const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+$("inp").value=SAMPLE;
+function go(n){if(n>0&&n<5&&!D){D=JSON.parse(JSON.stringify(DEMO));ok={};render()}scrollTo(0,0);[0,1,2,3,4,5,6].forEach(i=>{$("s"+i).classList.toggle("hid",i!==n);document.querySelector(`[data-s="${i}"]`).classList.toggle("on",i===n)})}
+document.querySelectorAll("#steps button").forEach(b=>b.onclick=()=>go(+b.dataset.s));
+function line(it){return it.qty*(it.mat+it.lab+it.eng+it.ins)}
+function render(){
+ if(!D)return;const m=+$("mg").value/100;$("mgv").textContent=$("mg").value+"%";
+ const cost=D.items.reduce((a,i)=>a+line(i),0),sell=cost*(1+m),gst=sell*.18;
+ const comp=k=>D.items.reduce((a,i)=>a+i.qty*i[k],0);
+ $("qt").textContent="Draft quotation – "+D.customer;$("qm").textContent=D.project;
+ $("qb").innerHTML=D.items.map((i,x)=>`<tr><td>${x+1}</td><td><b>${esc(i.item)}</b><div class="mu">${esc(i.dims)} · ${esc(i.spec)}</div></td><td>${esc(i.product)}</td><td class="n">${i.qty}</td><td class="n">${inr(i.qty*i.mat)}</td><td class="n">${inr(i.qty*i.lab)}</td><td class="n">${inr(i.qty*i.eng)}</td><td class="n">${inr(i.qty*i.ins)}</td><td class="n"><b>${inr(line(i)*(1+m))}</b></td><td><input type="checkbox" data-k="${x}" ${ok[x]?"checked":""}></td></tr>`).join("");
+ $("qb").querySelectorAll("input").forEach(c=>c.onchange=()=>{ok[c.dataset.k]=c.checked});
+ $("tot").innerHTML=`Subtotal <b>${inr(sell)}</b> · GST 18% ${inr(gst)} · <b>Total ${inr(sell+gst)}</b>`;
+ $("kp").innerHTML=[["Quote value (ex-GST)",inr(sell)],["Material",inr(comp("mat"))],["Labour + Engg.",inr(comp("lab")+comp("eng"))],["Installation",inr(comp("ins"))],["Open clarifications",D.clar.length]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ $("cl").innerHTML=D.clar.map(c=>`<li>${esc(c)}</li>`).join("");$("as").innerHTML=D.assum.map(c=>`<li>${esc(c)}</li>`).join("");
+ const r=D.risks,n=s=>r.filter(x=>x.s===s).length;
+ $("rk").innerHTML=[["Total risks",r.length],["High",n("High")],["Medium",n("Medium")],["Low",n("Low")]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ drawRisks();renderCost();renderSched();
+}
+function drawRisks(){const f=$("fl").value;
+ $("rb").innerHTML=D.risks.map((x,i)=>({x,i})).filter(o=>f==="All"||o.x.s===f).map(({x,i})=>`<tr><td>R${String(i+1).padStart(2,"0")}</td><td><b>${esc(x.t)}</b></td><td>${esc(x.c)}</td><td><span class="sev ${esc(x.s)}">${esc(x.s)}</span></td><td>${esc(x.i)}</td><td>${esc(x.m)}</td></tr>`).join("")}
+function renderCost(){
+ const c=D.cost||[];const g=+$("cg").value/100;$("cgv").textContent=$("cg").value+"%";
+ const base=c.reduce((a,x)=>a+(+x.amt||0),0),cont=base*g,tot=base+cont;
+ const m=+$("mg").value/100,qc=D.items.reduce((a,i)=>a+line(i),0),sell=qc*(1+m),mar=sell?(sell-tot)/sell:0;
+ const rows=c.concat([{head:"Contingency",basis:$("cg").value+"% of direct cost",amt:cont,assump:"General allowance for unforeseen cost",risk:"Low",note:""}]);
+ $("cb").innerHTML=rows.map(x=>`<tr><td><b>${esc(x.head)}</b></td><td>${esc(x.basis)}</td><td class="n">${inr(x.amt)}</td><td style="min-width:90px"><div class="bar" style="width:${tot?Math.max(2,x.amt/tot*100):0}%"></div><span class="mu">${tot?(x.amt/tot*100).toFixed(1):0}%</span></td><td>${esc(x.assump)}${x.note?`<div class="mu">${esc(x.note)}</div>`:""}</td><td><span class="sev ${esc(x.risk)}">${esc(x.risk)}</span></td></tr>`).join("");
+ $("ck").innerHTML=[["Planned project cost",inr(tot)],["Cost base in draft quote",inr(qc)],["Quote value at "+$("mg").value+"% margin",inr(sell)],["Margin vs cost plan",(mar*100).toFixed(1)+"%"]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ const hi=c.filter(x=>x.risk==="High").map(x=>esc(x.head));
+ $("cn").innerHTML=`<h2>Cost-risk indicators</h2><ul><li>${mar<.08?`Cost plan is ${inr(tot-qc)} above the draft quote’s cost base because it adds electrical, transport, commissioning and provisions. At the current price the margin is ${(mar*100).toFixed(1)}%. Revisit the quote before issue.`:`Draft quote covers the planned cost at a ${(mar*100).toFixed(1)}% margin.`}</li><li>High cost-risk heads: ${hi.length?hi.join(", "):"none"}.</li></ul>`;
+}
+function cpm(tk,sel,dl){const T={};tk.forEach(t=>T[t.id]={...t,dep:[].concat(t.dep||[]).filter(p=>p!==t.id),d:(+t.dur||0)+(t.id===sel?dl:0)});const ids=Object.keys(T),es={},lf={},v1={},v2={};const f=id=>{if(es[id]!==undefined)return es[id];if(v1[id])return 0;v1[id]=1;let s=0;T[id].dep.forEach(p=>{if(T[p])s=Math.max(s,f(p)+T[p].d)});return es[id]=s};ids.forEach(f);const end=Math.max(...ids.map(i=>es[i]+T[i].d));const g=id=>{if(lf[id]!==undefined)return lf[id];if(v2[id])return end;v2[id]=1;const sc=ids.filter(s=>T[s].dep.includes(id));return lf[id]=sc.length?Math.min(...sc.map(s=>g(s)-T[s].d)):end};ids.forEach(g);return{T,ids,es,lf,end}}
+function renderSched(){
+ const tk=D.tasks||[],sel=$("ws"),dl=+$("wd").value;$("wdv").textContent=dl+" d";
+ const key=tk.map(t=>t.id).join();
+ if(sel.dataset.k!==key){sel.dataset.k=key;sel.innerHTML=tk.map(t=>`<option value="${esc(t.id)}">${esc(t.id)} ${esc(t.name)}</option>`).join("")}
+ if(!tk.length){$("sb").innerHTML="";$("sk").innerHTML="";$("ms").innerHTML="";$("bn").innerHTML="<li>No schedule data.</li>";return}
+ const {T,ids,es,lf,end}=cpm(tk,sel.value,dl);
+ const fl=i=>lf[i]-es[i]-T[i].d,cr=i=>fl(i)<=0;
+ $("sb").innerHTML=ids.map(i=>{const t=T[i];return `<tr><td>${esc(i)}</td><td><b>${esc(t.name)}</b><div class="st">${esc(t.stage)}${t.note?" · "+esc(t.note):""}</div></td><td class="n">${t.d} d</td><td class="n">${es[i]}–${es[i]+t.d}</td><td>${esc(t.dep.join(", ")||"–")}${cr(i)?"<div class=\"st\" style=\"color:var(--hi)\">critical</div>":`<div class="st">float ${fl(i)} d</div>`}</td><td><div class="gb"><i class="${cr(i)?"cr":""}" style="left:${es[i]/end*100}%;width:${Math.max(1.2,t.d/end*100)}%"></i></div></td></tr>`}).join("");
+ const crit=ids.filter(cr).sort((a,b)=>es[a]-es[b]),pr=ids.filter(i=>/procure/i.test(T[i].stage)).sort((a,b)=>T[b].d-T[a].d)[0];
+ $("sk").innerHTML=[["Total duration",end+" working days"],["Approx. calendar",Math.ceil(end/5)+" weeks"],["Critical activities",crit.length+" of "+ids.length],["Longest procurement lead",pr?T[pr].d+" d":"–"]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ $("ms").innerHTML=(D.miles||[]).filter(m=>T[m.after]).map(m=>{const d=es[m.after]+T[m.after].d;return `<li><b>${esc(m.name)}</b> – day ${d} (week ${Math.ceil(d/5)})</li>`}).join("");
+ let bn=`<li>Critical path: ${crit.map(esc).join(" → ")}.</li>`;
+ if(dl>0){const b=cpm(tk,"",0).end,x=end-b;bn+=`<li><b>What-if:</b> a ${dl} d delay on ${esc(sel.value)} moves handover by ${x} d${x?" (on the critical path)":" (absorbed by float)"}.</li>`}
+ $("bn").innerHTML=bn+(D.bott||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+}
+$("fl").onchange=()=>D&&drawRisks();$("mg").oninput=render;$("cg").oninput=render;$("wd").oninput=render;$("ws").onchange=render;
+$("demo").onclick=()=>{D=JSON.parse(JSON.stringify(DEMO));ok={};$("am").textContent="";render();go(1)};
+$("reset").onclick=()=>{$("inp").value=SAMPLE};
+$("appr").onclick=()=>{if(!D)return;const k=D.items.every((_,i)=>ok[i]);$("am").textContent=k?"✓ Approved and ready to issue. High risks should be reviewed first (see Risk register).":"Tick every line item as reviewed before approving."};
+$("run").onclick=async()=>{ $("msg").textContent="Live AI is not enabled. Select Load demo result to explore the example quotation."; return;
+ if(!SRC.some(s=>(DS[s[0]]||[]).length)){go(5);$("dmsg").textContent="Add company data first so quotations are built from your own records.";return}const b=$("run");b.disabled=true;b.innerHTML='<span class="spin"></span>Analysing…';$("msg").textContent="Reading enquiry…";
+ try{
+  const resp=await fetch("api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({enquiry:$("inp").value,context:ctx()})});const r=await resp.json();if(!resp.ok||r.error)throw new Error(r.error||"Analysis failed");
+  if(!r||!Array.isArray(r.items)||!Array.isArray(r.risks))throw new Error("Unexpected AI output");
+  r.cost=r.cost||[];r.tasks=r.tasks||[];r.miles=r.miles||[];r.bott=r.bott||[];r.clar=r.clar||[];r.assum=r.assum||[];D=r;ok={};render();go(1);$("msg").textContent="";
+ }catch(e){$("msg").textContent="Live AI unavailable here – showing demo result instead.";D=JSON.parse(JSON.stringify(DEMO));ok={};render();go(1)}
+ b.disabled=false;b.textContent="Analyse with AI"};
+const SRC=[["items","Item list / catalogue","📦","code, name, unit, material_cost"],["labour","Labour and service rates","👷","activity, unit, rate"],["costing","Costing sheets","🧮","item, material, labour, engineering, installation, overhead_pct"],["quotes","Previous quotations","📄","quote_no, customer, date, scope, value, margin_pct, status"],["orders","Sales orders","🧾","so_no, quote_no, customer, value, delivery_days, status"],["customers","Customer details","🏢","name, city, payment_terms, credit_days"],["purchase","Purchase invoices","🛒","date, vendor, item, qty, rate, unit"],["salesinv","Sales invoices","💰","invoice_no, customer, date, amount"]];
+const SMP={items:`code,name,category,unit,material_cost,lead_time_days,notes
+HD-PR-5000,Heavy-duty pallet racking bay 2700x1100x5000,Racking,bay,41500,25,4 levels 1500 kg per level
+HD-PR-3600,Heavy-duty pallet racking bay 2700x1100x3600,Racking,bay,32800,25,3 levels 1500 kg per level
+MR-PR-2400,Medium-duty shelving rack 1800x600x2400,Racking,bay,14200,15,Powder coated
+MZ-200,Structural mezzanine floor 500 kg per sqm,Mezzanine,sqm,3650,35,Chequered plate flooring
+MZ-STAIR,Mezzanine staircase 1.2 m wide,Mezzanine,nos,48000,20,With handrail
+RC-STD-600,Roller conveyor 600 mm standard,Conveyor,m,7600,20,Gravity rollers
+RC-CUSTOM,Roller conveyor custom width,Conveyor,m,9800,45,Custom rollers single source
+RC-CURVE-90,Roller conveyor 90 degree curve,Conveyor,nos,38000,30,Standard radius
+SG-Rail-1100,Safety railing 1100 mm,Safety,m,1450,12,Yellow RAL 1023
+SG-MESH-2000,Machine guarding mesh panel 2000 mm,Safety,m,2900,15,
+PL-WORK-3000,Work platform with ladder 3 m,Platforms,nos,62000,28,
+ST-BIN-STD,Heavy-duty storage bin,Storage,nos,2800,10,
+`,labour:`activity,unit,rate,notes
+Fabrication and welding,per kg,14,
+Powder coating,per sqm,95,
+Installation crew of 4,per day,18500,
+Crane hire,per day,12000,
+Engineering design,per hour,1400,
+Site supervision,per day,4500,
+Commissioning and load test,per job,30000,
+Electrical wiring and fitting,per day,7500,
+`,costing:`item,material,labour,engineering,installation,transport,overhead_pct,target_margin_pct
+Racking bay 5000,41500,6200,2800,5400,1800,8,18
+Racking bay 3600,32800,5100,2300,4600,1500,8,18
+Mezzanine per sqm,3650,720,410,680,260,8,17
+Staircase,48000,9000,3500,6000,2500,8,17
+Conveyor standard per m,7600,1500,1100,1200,420,10,18
+Conveyor custom per m,9800,1900,1500,1400,520,10,20
+Safety railing per m,1450,260,90,310,95,8,18
+Work platform,62000,11000,5200,8500,3500,9,18
+`,quotes:`quote_no,customer,date,scope,value,margin_pct,status
+Q-2501,Orion Electronics,2025-01-17,Conveyor 18 m standard,269000,15,Won
+Q-2502,Sunrise Pumps Pvt. Ltd.,2025-02-03,Conveyor 22 m custom width,439000,20,Won
+Q-2503,Nova Plastics,2025-02-28,Conveyor 10 m custom width,200000,20,Lost
+Q-2504,Nova Plastics,2025-03-29,Conveyor 15 m custom width,307000,23,Lost
+Q-2505,Sunrise Pumps Pvt. Ltd.,2025-04-12,Safety railing 40 m,114000,20,Won
+Q-2506,Apex Auto Components,2025-05-05,Conveyor 10 m custom width,198000,19,Lost
+Q-2507,Metro Cold Chain,2025-06-01,Racking 6 bays,460000,23,Lost
+Q-2508,Sunrise Pumps Pvt. Ltd.,2025-06-23,Conveyor 30 m standard,464000,19,Won
+Q-2509,Apex Auto Components,2025-07-19,Racking 6 bays low height,342000,14,Lost
+Q-2510,Orion Electronics,2025-08-12,Racking 14 bays low height,847000,21,Lost
+Q-2511,Nova Plastics,2025-09-05,Safety railing 60 m,170000,19,Won
+Q-2512,Nova Plastics,2025-09-20,Racking 10 bays low height,610000,22,Won
+Q-2513,Deccan Logistics,2025-10-22,Work platform 2 nos,234000,19,Lost
+Q-2514,Nova Plastics,2025-11-06,Conveyor 15 m custom width,282000,13,Won
+Q-2515,Bharat Foods Ltd.,2025-12-04,Safety railing 60 m,167000,17,Won
+Q-2516,Sunrise Pumps Pvt. Ltd.,2025-12-28,Conveyor 10 m custom width,198000,19,Lost
+Q-2517,Sunrise Pumps Pvt. Ltd.,2026-01-14,Conveyor 18 m custom width,347000,16,Won
+Q-2518,Bharat Foods Ltd.,2026-02-06,Racking 10 bays low height,605000,21,Won
+Q-2519,Orion Electronics,2026-03-06,Racking 6 bays low height,339000,13,Lost
+Q-2520,Bharat Foods Ltd.,2026-03-28,Racking 10 bays,717000,15,Won
+Q-2521,Kaveri Textiles,2026-04-20,Racking 6 bays,456000,22,Won
+Q-2522,Deccan Logistics,2026-05-15,Safety railing 40 m,110000,15,Won
+Q-2523,Sunrise Pumps Pvt. Ltd.,2026-06-07,Conveyor 22 m custom width,435000,19,Won
+Q-2524,Metro Cold Chain,2026-06-28,Safety railing 120 m,343000,20,Won
+Q-2525,Nova Plastics,2026-07-16,Safety railing 40 m,114000,20,Pending
+Q-2526,Kaveri Textiles,2026-08-15,Racking 10 bays,729000,17,Pending
+`,orders:`so_no,quote_no,customer,value,delivery_days,status
+SO-206,Q-2501,Orion Electronics,269000,60,Delivered
+SO-212,Q-2502,Sunrise Pumps Pvt. Ltd.,439000,101,Delivered
+SO-218,Q-2505,Sunrise Pumps Pvt. Ltd.,114000,30,Delivered
+SO-224,Q-2508,Sunrise Pumps Pvt. Ltd.,464000,65,Delivered
+SO-230,Q-2511,Nova Plastics,170000,25,Delivered
+SO-236,Q-2512,Nova Plastics,610000,48,Delivered
+SO-242,Q-2514,Nova Plastics,282000,89,Delivered
+SO-248,Q-2515,Bharat Foods Ltd.,167000,33,Delivered
+SO-254,Q-2517,Sunrise Pumps Pvt. Ltd.,347000,104,Delivered
+SO-260,Q-2518,Bharat Foods Ltd.,605000,47,Delivered
+SO-266,Q-2520,Bharat Foods Ltd.,717000,55,Delivered
+SO-272,Q-2521,Kaveri Textiles,456000,60,Delivered
+SO-278,Q-2522,Deccan Logistics,110000,26,Delivered
+SO-284,Q-2523,Sunrise Pumps Pvt. Ltd.,435000,105,Delivered
+SO-290,Q-2524,Metro Cold Chain,343000,34,Delivered
+`,customers:`name,city,industry,payment_terms,credit_days
+Sunrise Pumps Pvt. Ltd.,Bengaluru,Pumps,40% advance 60% on delivery,30
+Apex Auto Components,Bengaluru,Automotive,50% advance,30
+Bharat Foods Ltd.,Hubballi,Food processing,30% advance,45
+Nova Plastics,Bengaluru,Plastics,Net 30,30
+Kaveri Textiles,Mysuru,Textiles,25% advance,60
+Deccan Logistics,Hosur,Logistics,Net 45,45
+Metro Cold Chain,Pune,Cold storage,50% advance,30
+Orion Electronics,Chennai,Electronics,30% advance,45
+`,purchase:`date,vendor,item,qty,unit,rate,lead_days
+2026-01-06,Steel Traders,MS plate 6 mm,6000,kg,58.2,7
+2026-01-06,RollTech,Conveyor rollers custom 850 mm,100,nos,2250,28
+2026-02-07,Karnataka Steel Hub,MS plate 6 mm,5000,kg,59.8,7
+2026-02-07,CoatPro,Powder paint,200,kg,412,5
+2026-03-08,Karnataka Steel Hub,MS plate 6 mm,5000,kg,60.5,7
+2026-03-08,Fastener World,Anchor bolts and fasteners,1,lot,38800,6
+2026-04-09,Steel Traders,MS plate 6 mm,6000,kg,61.1,7
+2026-04-09,RollTech,Conveyor rollers custom 850 mm,60,nos,2295,28
+2026-05-10,Steel Traders,MS plate 6 mm,5000,kg,61.8,7
+2026-05-10,CoatPro,Powder paint,200,kg,418,5
+2026-06-06,Karnataka Steel Hub,MS plate 6 mm,4000,kg,62.6,7
+2026-06-06,Fastener World,Anchor bolts and fasteners,1,lot,40000,6
+2026-07-07,Karnataka Steel Hub,MS plate 6 mm,5000,kg,64.2,7
+2026-07-07,RollTech,Conveyor rollers custom 850 mm,60,nos,2340,28
+2026-08-08,Steel Traders,MS plate 6 mm,5000,kg,65.1,7
+2026-08-08,CoatPro,Powder paint,200,kg,424,5
+2026-09-09,Steel Traders,MS plate 6 mm,5000,kg,65.7,7
+2026-09-09,Fastener World,Anchor bolts and fasteners,1,lot,41200,6
+2026-10-10,Steel Traders,MS plate 6 mm,5000,kg,66.5,7
+2026-10-10,RollTech,Conveyor rollers custom 850 mm,120,nos,2385,28
+`,salesinv:`invoice_no,so_no,customer,date,amount,status
+INV-801,SO-206,Orion Electronics,2025-01-29,95226,Paid
+INV-802,SO-206,Orion Electronics,2025-04-09,222194,Paid
+INV-803,SO-212,Sunrise Pumps Pvt. Ltd.,2025-02-15,207208,Paid
+INV-804,SO-212,Sunrise Pumps Pvt. Ltd.,2025-06-06,310812,Paid
+INV-805,SO-218,Sunrise Pumps Pvt. Ltd.,2025-04-24,53808,Paid
+INV-806,SO-218,Sunrise Pumps Pvt. Ltd.,2025-06-03,80712,Open
+INV-807,SO-224,Sunrise Pumps Pvt. Ltd.,2025-07-05,219008,Paid
+INV-808,SO-224,Sunrise Pumps Pvt. Ltd.,2025-09-18,328512,Paid
+INV-809,SO-230,Nova Plastics,2025-09-17,60180,Paid
+INV-810,SO-230,Nova Plastics,2025-10-22,140419,Open
+INV-811,SO-236,Nova Plastics,2025-10-02,215940,Paid
+INV-812,SO-236,Nova Plastics,2025-11-29,503860,Paid
+INV-813,SO-242,Nova Plastics,2025-11-18,99828,Paid
+INV-814,SO-242,Nova Plastics,2026-02-25,232932,Paid
+INV-815,SO-248,Bharat Foods Ltd.,2025-12-16,59118,Paid
+INV-816,SO-248,Bharat Foods Ltd.,2026-01-28,137941,Overdue
+INV-817,SO-254,Sunrise Pumps Pvt. Ltd.,2026-01-26,163784,Paid
+INV-818,SO-254,Sunrise Pumps Pvt. Ltd.,2026-05-20,245676,Paid
+INV-819,SO-260,Bharat Foods Ltd.,2026-02-18,214170,Paid
+INV-820,SO-260,Bharat Foods Ltd.,2026-04-16,499730,Open
+INV-821,SO-266,Bharat Foods Ltd.,2026-04-09,253818,Paid
+INV-822,SO-266,Bharat Foods Ltd.,2026-06-13,592241,Overdue
+INV-823,SO-272,Kaveri Textiles,2026-05-02,161424,Paid
+INV-824,SO-272,Kaveri Textiles,2026-07-11,376656,Paid
+INV-825,SO-278,Deccan Logistics,2026-05-27,38940,Paid
+INV-826,SO-278,Deccan Logistics,2026-07-02,90860,Paid
+INV-827,SO-284,Sunrise Pumps Pvt. Ltd.,2026-06-19,205320,Paid
+INV-828,SO-284,Sunrise Pumps Pvt. Ltd.,2026-10-12,307980,Overdue
+INV-829,SO-290,Metro Cold Chain,2026-07-10,121422,Paid
+INV-830,SO-290,Metro Cold Chain,2026-08-23,283317,Overdue
+`};
+let DS={};try{DS=JSON.parse(localStorage.getItem("nexasource_factoryos_demo_ds")||"{}")}catch(e){}
+const saveDS=()=>{try{const s=JSON.stringify(DS);if(s.length<4e6)localStorage.setItem("nexasource_factoryos_demo_ds",s)}catch(e){}};
+function parseCSV(t,sep){const R=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}else if(ch=='"')q=true;else if(ch==sep){r.push(c);c=""}else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);c="";if(r.some(x=>x!==""))R.push(r);r=[]}else c+=ch}r.push(c);if(r.some(x=>x!==""))R.push(r);return R}
+const key=s=>String(s).trim().toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
+function rowsFrom(A){if(!A.length)return [];const h=A[0].map(key);return A.slice(1).map(r=>{const o={};h.forEach((k,i)=>{if(k)o[k]=r[i]===undefined?"":String(r[i]).trim()});return o})}
+async function ingest(k,file){const n=file.name.toLowerCase();let rows;
+ if(/\.xlsx?$/.test(n)){if(!window.XLSX)throw new Error("Excel reader not loaded");const wb=XLSX.read(await file.arrayBuffer());rows=rowsFrom(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""}))}
+ else{const t=await file.text();if(/\.json$/.test(n)){const j=JSON.parse(t);rows=(Array.isArray(j)?j:[j]).map(o=>Object.fromEntries(Object.entries(o).map(([a,v])=>[key(a),String(v)])))}else rows=rowsFrom(parseCSV(t,n.endsWith(".tsv")?"\t":","))}
+ if(!rows.length)throw new Error("no rows found");DS[k]=rows;saveDS();drawData()}
+function ctx(){let s="";SRC.forEach(([k,l])=>{const r=DS[k]||[];if(!r.length)return;const h=Object.keys(r[0]);s+=`## ${l} (${r.length} rows${r.length>40?", first 40 shown":""})\n`+h.join(",")+"\n"+r.slice(0,40).map(x=>h.map(c=>x[c]).join(",")).join("\n")+"\n\n"});return s.slice(0,14000)||"(none provided)"}
+function drawData(){
+ $("dmsg").textContent="";const n=SRC.filter(s=>(DS[s[0]]||[]).length).length;
+ $("dk").innerHTML=[["Sources loaded",n+" of "+SRC.length],["Records",SRC.reduce((a,s)=>a+(DS[s[0]]||[]).length,0)],["Readiness",Math.round(n/SRC.length*100)+"%"]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ $("dg").innerHTML=SRC.map(s=>{const r=DS[s[0]]||[];return `<div class="card dc ${r.length?"ok":""}"><div class="dh"><span class="di">${s[2]}</span><div><b>${s[1]}</b><div class="st">Expected: ${s[3]}</div></div><span class="sev ${r.length?"Low":"Medium"}">${r.length?r.length+" rows":"empty"}</span></div>${r.length?`<div class="st" style="margin-top:6px">Columns found: ${esc(Object.keys(r[0]).join(", "))}</div>`:""}<div class="row"><label class="btn">Upload<input type="file" hidden data-u="${s[0]}" accept=".csv,.tsv,.json,.xlsx,.xls"></label><button class="btn" data-smp="${s[0]}">Sample</button>${r.length?`<button class="btn" data-c="${s[0]}">Clear</button>`:""}</div></div>`}).join("");
+ document.querySelectorAll("[data-u]").forEach(f=>f.onchange=async()=>{try{await ingest(f.dataset.u,f.files[0])}catch(e){$("dmsg").textContent="Could not read file: "+e.message}});
+ document.querySelectorAll("[data-smp]").forEach(b=>b.onclick=()=>{DS[b.dataset.smp]=rowsFrom(parseCSV(SMP[b.dataset.smp],","));saveDS();drawData()});
+ document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{delete DS[b.dataset.c];saveDS();drawData()});
+ const q=DS.quotes||[],o=DS.orders||[],ins=[],num=v=>parseFloat(String(v||"").replace(/[^0-9.\-]/g,""))||0,avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+ if(q.length&&q[0].status!==undefined){const w=q.filter(x=>/won|accept|conver/i.test(x.status)),lo=q.filter(x=>!w.includes(x));ins.push(`Win rate: ${Math.round(w.length/q.length*100)}% of ${q.length} quotations.`);if(q[0].margin_pct!==undefined&&w.length)ins.push(`Average margin: ${avg(w.map(x=>num(x.margin_pct))).toFixed(1)}% on won quotes${lo.length?` vs ${avg(lo.map(x=>num(x.margin_pct))).toFixed(1)}% on the rest`:""}.`)}
+ if(q.length&&q[0].customer!==undefined){const c={};q.forEach(x=>c[x.customer]=(c[x.customer]||0)+1);const rep=Object.keys(c).filter(k=>c[k]>1);if(rep.length)ins.push(`Repeat customers: ${esc(rep.join(", "))}.`)}
+ if(o.length&&o[0].delivery_days!==undefined)ins.push(`Average delivery time on past orders: ${Math.round(avg(o.map(x=>num(x.delivery_days))))} days.`);
+ if((DS.items||[]).length)ins.push(`${DS.items.length} catalogue items available for product mapping.`);
+ if((DS.labour||[]).length)ins.push(`${DS.labour.length} labour and service rates available for cost build-up.`);
+ $("di").innerHTML=ins.length?ins.map(x=>`<li>${x}</li>`).join(""):"<li>Load or upload data to see what it tells us.</li>";
+ $("dchip").innerHTML=n?`Quotes will be built from your company data (${n} of ${SRC.length} sources loaded).`:`<b style="color:var(--me)">No company data yet.</b> Add it in the Company data tab so quotes use your own items and rates.`}
+const INSTR="You are the data assistant for a manufacturing company's quotation system. Answer using ONLY the company data provided. Be concise (under 150 words), use ₹ with Indian number grouping, show the key numbers, and say clearly when the data does not contain the answer. Only the first 40 rows of each source are shown.";
+async function aiChat(msgs){throw new Error("Live AI is not enabled in this demo. Use the sample quick questions.");const r=await fetch("api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:msgs,context:ctx()})});const j=await r.json();if(!r.ok||j.error)throw new Error(j.error||"AI unavailable");return j.reply}
+const n2=v=>parseFloat(String(v||"").replace(/[^0-9.\-]/g,""))||0,fm=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const LOC={
+ topcust(){const q=DS.quotes||[];if(!q.length)return"Load previous quotations first.";const c={};q.forEach(x=>{const o=c[x.customer]=c[x.customer]||{n:0,w:0,v:0};o.n++;if(/won/i.test(x.status)){o.w++;o.v+=n2(x.value)}});return"Won value by customer:\n"+Object.entries(c).sort((a,b)=>b[1].v-a[1].v).slice(0,5).map(([k,o])=>`- **${k}**: ${fm(o.v)} won, ${o.w} of ${o.n} quotes`).join("\n")},
+ steel(){const p=(DS.purchase||[]).filter(x=>/plate|steel/i.test(x.item));if(p.length<2)return"Load purchase invoices with steel items first.";p.sort((a,b)=>a.date<b.date?-1:1);const a=n2(p[0].rate),b=n2(p[p.length-1].rate);return `Steel plate rate moved from **${fm(a)}/kg** (${p[0].date}) to **${fm(b)}/kg** (${p[p.length-1].date}), a change of **${((b-a)/a*100).toFixed(1)}%**. Consider a steel-escalation clause and a shorter quote validity.`},
+ overdue(){const s=(DS.salesinv||[]).filter(x=>/overdue|open/i.test(x.status));if(!s.length)return"No open or overdue invoices found (or sales invoices are not loaded).";const c={};s.forEach(x=>c[x.customer]=(c[x.customer]||0)+n2(x.amount));return "Outstanding by customer:\n"+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`- **${k}**: ${fm(v)}`).join("\n")+`\nTotal: **${fm(Object.values(c).reduce((a,b)=>a+b,0))}**`},
+ gaps(){const m=SRC.filter(s=>!(DS[s[0]]||[]).length).map(s=>s[1]);return m.length?"Still missing: "+m.join(", ")+". Quotes get more accurate as these are added.":"All 8 sources are loaded. Next, keep them updated after every quote and order."}};
+const fmt=t=>esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+let CH=[];
+function addB(t,c){const d=document.createElement("div");d.className="bub "+c;d.innerHTML=fmt(t);$("chat").appendChild(d);$("chat").scrollTop=1e9;return d}
+async function ask(q,loc){q=q.trim();if(!q)return;if(!SRC.some(s=>(DS[s[0]]||[]).length)){addB("Load or upload company data first, then ask me anything about it.","a");return}
+ addB(q,"u");CH.push({role:"user",content:q});const w=addB("Thinking…","a");$("cs").disabled=true;$("cq").value="";
+ let a;try{const h=CH.slice(-8);a=await aiChat(h[0].role==="assistant"?h.slice(1):h)}catch(e){a=loc&&LOC[loc]?LOC[loc]():"The AI assistant is not available right now. Try one of the quick questions above."}
+ w.innerHTML=fmt(a);CH.push({role:"assistant",content:a});$("cs").disabled=false;$("chat").scrollTop=1e9}
+$("chips").innerHTML=[["Top customers","topcust","Which customers are most valuable to us?"],["Steel price trend","steel","How has our steel purchase price moved?"],["Outstanding payments","overdue","Which customers have outstanding or overdue invoices, and how much?"],["Data gaps","gaps","What data is missing and what should I add next?"]].map(c=>`<button class="chip" data-l="${c[1]}" data-q="${c[2]}">${c[0]}</button>`).join("");
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>ask(b.dataset.q,b.dataset.l));
+$("cs").onclick=()=>ask($("cq").value);$("cq").onkeydown=e=>{if(e.key==="Enter")ask($("cq").value)};
+$("dnext").onclick=()=>go(0);
+$("dsample").onclick=()=>{SRC.forEach(s=>DS[s[0]]=rowsFrom(parseCSV(SMP[s[0]],",")));saveDS();drawData()};
+$("dclear").onclick=()=>{DS={};saveDS();drawData()};
+drawData();
+const BILLP="You read supplier purchase bills for an Indian manufacturer. The bill may be a typed PDF, a spreadsheet, a photo or a handwritten scan. Extract it and reply with JSON only: {\"vendor\":str,\"gstin\":str,\"bill_no\":str,\"bill_date\":\"YYYY-MM-DD\",\"po_ref\":str,\"lines\":[{\"desc\":str,\"qty\":number,\"unit\":str,\"rate\":number,\"amount\":number}],\"subtotal\":number,\"tax\":number,\"total\":number,\"confidence\":\"High|Medium|Low\",\"notes\":[str]}. Copy names as printed. If handwriting is unclear, give your best reading, lower the confidence and mention each doubtful value in notes. Use null for fields not on the bill. Known vendors: {{VENDORS}}. Known materials: {{MATERIALS}}. Use these lists only to read unclear text better, never to replace what is printed.\n\nBILL TEXT:\n{{TEXT}}";
+const BSMP={vendor:"Steel Traders Bengaluru",gstin:"29ABCDE1234F1Z5",bill_no:"ST/2026/1187",bill_date:"2026-10-28",po_ref:null,lines:[{desc:"M.S. Plate 6mm",qty:5000,unit:"kg",rate:70.5,amount:352500},{desc:"MS Channel ISMC 100",qty:1200,unit:"kg",rate:68,amount:81600},{desc:"Cutting and carting",qty:1,unit:"lot",rate:2500,amount:2500}],subtotal:436600,tax:78588,total:515188,confidence:"Medium",notes:["Handwritten bill: the rate on line 1 was read as 70.5. Please verify.","Vendor name differs slightly from the vendor master."]};
+let PB=[];try{PB=JSON.parse(localStorage.getItem("nexasource_factoryos_demo_pb")||"[]")}catch(e){}
+const savePB=()=>{try{localStorage.setItem("nexasource_factoryos_demo_pb",JSON.stringify(PB))}catch(e){}};
+const uniq=a=>[...new Set(a.filter(Boolean))];
+const vendors=()=>uniq([...(DS.purchase||[]).map(x=>x.vendor),...PB.map(b=>b.vendor)]);
+const materials=()=>uniq([...(DS.purchase||[]).map(x=>x.item),...PB.flatMap(b=>b.lines.map(l=>l.mat))]);
+const tok=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().split(" ").filter(Boolean);
+const sim=(a,b)=>{const x=tok(a).join(""),y=tok(b).join("");if(!x||!y)return 0;if(x===y)return 1;const A=new Set(tok(a)),B=new Set(tok(b)),i=[...A].filter(t=>B.has(t)).length;return Math.min(1,i/new Set([...A,...B]).size+(x.includes(y)||y.includes(x)?.3:0))};
+const best=(raw,list)=>{let b=["",0];list.forEach(x=>{const s=sim(raw,x);if(s>b[1])b=[x,s]});return b};
+const lastRate=m=>{const a=(DS.purchase||[]).filter(x=>x.item===m).sort((p,q)=>p.date<q.date?-1:1);return a.length?n2(a[a.length-1].rate):0};
+let BILL=null;
+function mkBill(r){const v=best(r.vendor,vendors()),ml=materials();return{vraw:r.vendor||"",vmap:v[1]>=.5?v[0]:"__new",vs:v[1],gstin:r.gstin||"",no:r.bill_no||"",date:r.bill_date||"",tax:+r.tax||0,stated:+r.total||0,conf:r.confidence||"Medium",notes:r.notes||[],lines:(r.lines||[]).map(l=>{const m=best(l.desc,ml);return{desc:l.desc||"",qty:+l.qty||0,recv:+l.qty||0,unit:l.unit||"",rate:+l.rate||0,mat:m[1]>=.5?m[0]:"__new"}})}}
+async function shrink(b){const im=await createImageBitmap(b),k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);return await new Promise(r=>c.toBlob(r,"image/jpeg",.85))}
+async function pdfPages(f){if(!window.pdfjsLib)throw new Error("PDF reader not loaded");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";const d=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,np=Math.min(d.numPages,3);let t="",im=[];for(let p=1;p<=np;p++){t+=(await(await d.getPage(p)).getTextContent()).items.map(i=>i.str).join(" ")+"\n"}
+ if(t.replace(/\s/g,"").length<80){t="";for(let p=1;p<=np;p++){const pg=await d.getPage(p),v=pg.getViewport({scale:1.6}),c=document.createElement("canvas");c.width=v.width;c.height=v.height;await pg.render({canvasContext:c.getContext("2d"),viewport:v}).promise;im.push(await new Promise(r=>c.toBlob(r,"image/jpeg",.85)))}}return{text:t,imgs:im}}
+async function prep(files){let text="",imgs=[];for(const f of files){const n=f.name.toLowerCase();
+ if(/\.xlsx?$/.test(n)){if(!window.XLSX)throw new Error("Excel reader not loaded");const wb=XLSX.read(await f.arrayBuffer());text+=XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]])+"\n"}
+ else if(/\.(csv|txt)$/.test(n))text+=await f.text()+"\n";
+ else if(n.endsWith(".pdf")){const r=await pdfPages(f);text+=r.text;imgs.push(...r.imgs)}
+ else if(f.type.startsWith("image/"))imgs.push(await shrink(f));
+ else throw new Error("Unsupported file: "+f.name)}
+ return{text:text.slice(0,12000),imgs:imgs.slice(0,4)}}
+async function aiExtract(text,imgs){throw new Error("Live bill extraction is not enabled. Choose Use sample handwritten bill to explore.");const b64=await Promise.all(imgs.map(b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(b)})));const r=await fetch("api/extract",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,images:b64,vendors:vendors(),materials:materials()})});const j=await r.json();if(!r.ok||j.error)throw new Error(j.error||"Extraction failed");return j}
+function renderBill(){const B=BILL,el=$("prv");if(!B){el.innerHTML="";return}
+ const vl=vendors(),ml=materials(),opt=(l,sel,nl)=>l.map(x=>`<option ${x===sel?"selected":""}>${esc(x)}</option>`).join("")+`<option value="__new" ${sel==="__new"?"selected":""}>${esc(nl)}</option>`;
+ const sub=B.lines.reduce((a,l)=>a+l.qty*l.rate,0),tot=sub+B.tax,vn=B.vmap==="__new"?B.vraw:B.vmap,warns=[];
+ if(PB.some(b=>b.status==="Approved"&&b.no&&b.no===B.no&&b.vendor===vn))warns.push("Possible duplicate: this vendor and bill number is already in the register.");
+ if(B.stated&&Math.abs(tot-B.stated)>Math.max(2,B.stated*.01))warns.push(`Computed total ${fm(tot)} differs from the bill total ${fm(B.stated)}. Check quantities, rates and tax.`);
+ B.lines.forEach((l,i)=>{if(l.recv<l.qty)warns.push(`Line ${i+1}: received ${l.recv} of ${l.qty} ${esc(l.unit)} billed (short inward).`)});
+ const ni=(i,f,v)=>`<input class="in" type="number" style="min-width:0;width:84px;flex:none" data-i="${i}" data-f="${f}" value="${v}">`;
+ const rows=B.lines.map((l,i)=>{const lr=l.mat!=="__new"?lastRate(l.mat):0,dv=lr?(l.rate-lr)/lr*100:0;return `<tr><td>${i+1}</td><td>${esc(l.desc)}</td><td><select class="in" style="min-width:150px;flex:none" data-i="${i}" data-f="mat">${opt(ml,l.mat,"New material")}</select></td><td class="n">${ni(i,"qty",l.qty)}</td><td class="n">${ni(i,"recv",l.recv)}</td><td>${esc(l.unit)}</td><td class="n">${ni(i,"rate",l.rate)}</td><td class="n">${fm(l.qty*l.rate)}</td><td>${l.mat==="__new"?'<span class="sev Medium">New</span> ':""}${Math.abs(dv)>3?`<span class="sev ${Math.abs(dv)>8?"High":"Medium"}">${dv>0?"+":""}${dv.toFixed(1)}% vs ${fm(lr)}</span>`:""}</td></tr>`}).join("");
+ el.innerHTML=`<div class="card"><h2>Extracted bill <span class="sev ${B.conf==="High"?"Low":B.conf==="Low"?"High":"Medium"}">${esc(B.conf)} confidence</span></h2>${B.notes.length?`<ul class="mu">${B.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>`:""}
+<div class="pg"><label class="mu">Supplier (printed: <b>${esc(B.vraw)}</b>)<select class="in" data-i="h" data-f="vmap">${opt(vl,B.vmap,"New vendor: "+B.vraw)}</select><span class="st">${B.vmap==="__new"?"No close match in the vendor master":"Matched to vendor master ("+Math.round(B.vs*100)+"% similar)"}</span></label><label class="mu">Bill no.<input class="in" data-i="h" data-f="no" value="${esc(B.no)}"></label><label class="mu">Bill date<input class="in" type="date" data-i="h" data-f="date" value="${esc(B.date)}"></label><label class="mu">GSTIN<input class="in" data-i="h" data-f="gstin" value="${esc(B.gstin)}"></label></div>
+<div class="sc"><table><thead><tr><th>#</th><th>Description (printed)</th><th>Material master</th><th class="n">Billed</th><th class="n">Received</th><th>Unit</th><th class="n">Rate</th><th class="n">Amount</th><th>Check</th></tr></thead><tbody>${rows}</tbody></table></div>
+<div class="row"><label class="mu">Tax ₹ ${ni("h","tax",B.tax)}</label><span class="msg">Subtotal ${fm(sub)} · <b>Total ${fm(tot)}</b></span></div>
+${warns.length?`<ul style="color:var(--me)">${warns.map(w=>`<li>${w}</li>`).join("")}</ul>`:""}
+<div class="row"><button class="btn p" id="pa">Approve and save</button><button class="btn" id="pd">Discard</button></div></div>`;
+ el.querySelectorAll("[data-f]").forEach(x=>x.onchange=()=>{const v=x.type==="number"?+x.value:x.value;if(x.dataset.i==="h")B[x.dataset.f]=v;else B.lines[+x.dataset.i][x.dataset.f]=v;renderBill()});
+ $("pd").onclick=()=>{BILL=null;renderBill()};$("pa").onclick=approveBill}
+function approveBill(){const B=BILL,vendor=(B.vmap==="__new"?B.vraw:B.vmap).trim();
+ if(!vendor||!B.no.trim()||!B.date||!B.lines.length){$("pmsg").textContent="Vendor, bill number, date and at least one line are needed.";return}
+ const lines=B.lines.map(l=>({...l,mat:l.mat==="__new"?l.desc.trim():l.mat})),sub=lines.reduce((a,l)=>a+l.qty*l.rate,0),grn="GRN-"+(1001+PB.length);
+ DS.purchase=DS.purchase||[];lines.forEach(l=>DS.purchase.push({date:B.date,vendor,item:l.mat,qty:String(l.qty),unit:l.unit,rate:String(l.rate),lead_days:""}));
+ PB.push({grn,vendor,gstin:B.gstin,no:B.no,date:B.date,total:Math.round(sub+B.tax),lines,inward:lines.every(l=>l.recv>=l.qty)?"Full":"Partial",status:"Approved",at:new Date().toLocaleString("en-IN")});
+ saveDS();savePB();BILL=null;renderBill();regBill();drawData();$("pmsg").textContent=`Saved ${grn}: ${lines.length} lines added to the purchase register and your company data.`}
+function regBill(){$("preg").innerHTML=PB.length?PB.slice().reverse().map(b=>`<tr><td>${esc(b.grn)}</td><td>${esc(b.no)}</td><td>${esc(b.vendor)}</td><td>${esc(b.date)}</td><td class="n">${fm(b.total)}</td><td><span class="sev ${b.inward==="Full"?"Low":"Medium"}">${b.inward}</span></td><td><span class="sev Low">${b.status}</span></td></tr>`).join(""):`<tr><td colspan="7" class="mu">No bills saved yet.</td></tr>`}
+$("psmp").onclick=()=>{BILL=mkBill(BSMP);$("pmsg").textContent="";renderBill()};
+$("pf").onchange=async()=>{const fs=[...$("pf").files];if(!fs.length)return;$("pfn").textContent=fs.map(f=>f.name).join(", ");const m=$("pmsg");m.innerHTML='<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:var(--ac)"></span>Reading the bill…';
+ try{const{text,imgs}=await prep(fs),r=await aiExtract(text,imgs);if(!r||!Array.isArray(r.lines)||!r.lines.length)throw new Error("No line items found");BILL=mkBill(r);m.textContent="Bill read. Review the mapping below, then approve.";renderBill()}catch(e){m.textContent="Could not read the bill: "+(e.message||e.code||"error")+". You can try the sample bill instead."}
+ $("pf").value=""};
+renderBill();regBill();
+const NAMES=["Enquiry","Quotation","Risk register","Cost plan","Schedule"];
+[1,2,3,4].forEach(i=>{const d=document.createElement("div");d.className="nav";d.innerHTML=`<button class="btn" data-g="${i-1}">← ${NAMES[i-1]}</button>`+(i<4?`<button class="btn p" data-g="${i+1}">Next: ${NAMES[i+1]} →</button>`:`<button class="btn p" onclick="window.print()">Print / save as PDF</button>`);$("s"+i).appendChild(d);d.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(+b.dataset.g))});
+</script></body></html>
