@@ -22,6 +22,18 @@
 #hero-motion{margin-top:18px;background:#101720;color:#fff;border:1px solid #58636d;border-radius:99px;padding:8px 14px;cursor:pointer}
 @media(max-width:850px){.hero .visual{display:none}}
 @media(prefers-reduced-motion:reduce){.hero-film{transition:none}}
+</style><style>
+.clients{padding:48px 0 56px;border-top:1px solid #ffffff18}
+.clients h2{font-size:clamp(28px,4vw,44px);font-weight:500;margin:0 0 24px}
+.client-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.client-grid li{background:#101720;border:1px solid #ffffff18;padding:12px;text-align:center}
+.client-grid span{display:block;padding:12px 4px 3px;font-size:14px}
+.client-mark{height:116px;display:grid;place-items:center;background:#0a1018;overflow:hidden}
+.client-mark.light{background:#f5f3ef}
+.client-mark.black{background:#000}
+.client-mark img{width:82%;height:96px;object-fit:contain}
+.client-mark.black img{transform:scale(2)}
+@media(max-width:700px){.client-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head>
 <body>
 <header class="wrap nav">
@@ -53,6 +65,16 @@
   </div>
  </div>
 </section>
+<section class="wrap clients" aria-labelledby="clients-title">
+  <h2 id="clients-title">Our clients</h2>
+  <ul class="client-grid">
+    <li><div class="client-mark light"><img src="visionaire.png" alt="" loading="lazy"></div><span>Visionair Lab</span></li>
+    <li><div class="client-mark"><img src="one-dream.png" alt="" loading="lazy"></div><span>One Dream Gymnastics</span></li>
+    <li><div class="client-mark light"><img src="kle.png" alt="" loading="lazy"></div><span>KLE</span></li>
+    <li><div class="client-mark black"><img src="mundhe-banni.png" alt="" loading="lazy"></div><span>Mundhe Banni</span></li>
+  </ul>
+</section>
+
 <div class="wrap metrics">
  <div class="metric"><strong>Industry-focused</strong><span>Manufacturing, Healthcare & Hospitality</span></div>
  <div class="metric"><strong>Outcome-led</strong><span>Milestones tied to business value</span></div>
