@@ -19,6 +19,19 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
 @media(max-width:900px){.nav{flex-wrap:wrap;padding-block:12px}.navlinks{order:3;width:100%;gap:12px}.hero-grid{grid-template-columns:1fr;gap:24px}.hero{padding:44px 0}.cards,.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.wrap{width:calc(100% - 32px)}section{padding:50px 0}.hero h1{font-size:clamp(40px,10vw,60px)}.cards,.flow,.split,.contact-layout,.formgrid{grid-template-columns:1fr}.band{align-items:flex-start;flex-direction:column}.client-grid li{width:180px}.navcta{padding:8px 10px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-film{transition:none}.client-track{animation:none}.client-viewport{overflow-x:auto}.client-grid[aria-hidden],#logo-motion{display:none}}
+/* Blend the footage into the hero background. */
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero-grid>div:first-child{position:relative;z-index:1}
+.hero-screen{position:absolute;inset:0 0 0 auto;width:65%;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.hero-media{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;background:none;mask-image:linear-gradient(90deg,transparent 8%,#000 58%)}
+.hero-film{object-fit:cover;object-position:right center}
+#hero-motion{position:absolute;right:24px;bottom:24px;z-index:2}
+@media(max-width:900px){
+.hero-screen{position:relative;inset:auto;width:100%;padding-bottom:38px}
+.hero-media{position:relative;inset:auto;aspect-ratio:16/9;mask-image:linear-gradient(180deg,transparent,#000 14%,#000 88%,transparent)}
+.hero-film{object-fit:contain}
+#hero-motion{bottom:0;right:0}
+}
 </style>
 </head>
 <body>
@@ -38,7 +51,7 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
    <div class="note">From a focused AI pilot to a production-ready application.</div>
   </div>
   <div class="hero-screen">
-    <div class="screen-bar"><span>AI applications in action</span><button id="hero-motion" type="button">Pause videos</button></div>
+    <button id="hero-motion" type="button">Pause videos</button>
     <div class="hero-media"><video class="hero-film" src="manufacturing.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video></div>
   </div>
  </div>
