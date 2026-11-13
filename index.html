@@ -34,6 +34,40 @@
 .client-mark img{width:82%;height:96px;object-fit:contain}
 .client-mark.black img{transform:scale(2);filter:invert(1) hue-rotate(180deg) saturate(1.3) contrast(1.15)}
 @media(max-width:700px){.client-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style><style>
+:root{color-scheme:dark;--bg:#0a0d14;--panel:#141a25;--text:#f6f2eb;--muted:#b4bac5;--line:#ffffff23;--blue:#e2c493;--cyan:#e2c493}
+body{background:#0a0d14;color:var(--text);font-family:Inter,Arial,sans-serif}
+.hero h1,.section-head h2,.band h2,.clients h2{font-family:Georgia,serif;letter-spacing:-.045em;font-weight:400}
+.hero h1{font-size:clamp(48px,7vw,100px);line-height:1.02}
+.gradient,.kicker,.card .num,.flowstep strong{color:#e2c493}
+.mark,.navcta,.btn:not(.secondary){background:#e2c493;color:#16120e}
+.dot{background:#e2c493;box-shadow:none}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero::after{background:linear-gradient(90deg,#0a0d14 4%,#0a0d14de 38%,#0a0d1430 88%),linear-gradient(0deg,#0a0d14,transparent 28%)}
+.cards{gap:14px;background:none;border:0}
+.card,.flowstep,.contact-card{background:#141a25;border:1px solid var(--line);border-radius:18px}
+.card:hover{background:#1b2230}.band{background:#171d29;border-radius:24px;border-color:var(--line)}
+.client-viewport{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.client-track{display:flex;width:max-content;animation:client-slide 32s linear infinite}
+.client-grid{display:flex;gap:18px;padding-right:18px}
+.client-grid li{width:240px;padding:14px;background:#141a25;border-radius:24px}
+.client-mark,.client-mark.light,.client-mark.black{background:#fff;border-radius:16px}
+.client-mark img{height:92px}
+.client-mark:not(.light):not(.black) img{filter:drop-shadow(0 3px 6px #1113)}
+.client-mark.black img{filter:invert(1) grayscale(1) brightness(.78) contrast(1.9);mix-blend-mode:multiply}
+.client-viewport:hover .client-track,.client-viewport:focus-within .client-track,.client-track.paused{animation-play-state:paused}
+#logo-motion{margin-top:14px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:8px 12px;cursor:pointer}
+@keyframes client-slide{to{transform:translateX(-50%)}}
+@media(max-width:850px){
+.hero{display:flex;flex-direction:column;min-height:auto;padding:34px 0 30px}
+.hero::after{display:none}
+.hero-media{position:relative;inset:auto;order:1;width:calc(100% - 36px);margin:28px auto 0;aspect-ratio:16/9;border-radius:16px;border:1px solid var(--line);background:#141a25}
+.hero-film{object-fit:contain;object-position:center}
+.hero h1{font-size:clamp(38px,9vw,65px)}
+.hero-grid{display:block}.hero .visual{display:none}
+.client-grid li{width:180px}
+}
+@media(prefers-reduced-motion:reduce){.client-viewport{overflow-x:auto;mask-image:none}.client-grid[aria-hidden]{display:none}#logo-motion{display:none}}
 </style></head>
 <body>
 <header class="wrap nav">
@@ -42,7 +76,7 @@
   <a class="navcta" href="#contact">Discuss a project <span>↗</span></a>
 </header>
 <main id="top">
-<section class="hero"><video class="hero-film" src="manufacturing.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video>
+<section class="hero"><div class="hero-media"><video class="hero-film" src="manufacturing.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video></div>
  <div class="wrap hero-grid">
   <div>
    <div class="eyebrow"><span class="dot"></span> AI-driven applications</div>
@@ -67,12 +101,17 @@
 </section>
 <section class="wrap clients" aria-labelledby="clients-title">
   <h2 id="clients-title">Our clients</h2>
-  <ul class="client-grid">
+  <div class="client-viewport" tabindex="0" aria-label="Client logos"><div class="client-track"><ul class="client-grid">
     <li><div class="client-mark light"><img src="visionaire.png" alt="" loading="lazy"></div><span>Visionair Lab</span></li>
     <li><div class="client-mark"><img src="one-dream.png" alt="" loading="lazy"></div><span>One Dream Gymnastics</span></li>
     <li><div class="client-mark light"><img src="kle.png" alt="" loading="lazy"></div><span>KLE</span></li>
     <li><div class="client-mark black"><img src="mundhe-banni.png" alt="" loading="lazy"></div><span>Mundhe Banni</span></li>
-  </ul>
+  </ul><ul class="client-grid" aria-hidden="true">
+    <li><div class="client-mark light"><img src="visionaire.png" alt="" loading="lazy"></div><span>Visionair Lab</span></li>
+    <li><div class="client-mark"><img src="one-dream.png" alt="" loading="lazy"></div><span>One Dream Gymnastics</span></li>
+    <li><div class="client-mark light"><img src="kle.png" alt="" loading="lazy"></div><span>KLE</span></li>
+    <li><div class="client-mark black"><img src="mundhe-banni.png" alt="" loading="lazy"></div><span>Mundhe Banni</span></li>
+  </ul></div></div><button type="button" id="logo-motion" aria-pressed="false">Pause logo motion</button>
 </section>
 
 <div class="wrap metrics">
@@ -207,5 +246,12 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     if (!timer && button.textContent === 'Pause videos') start();
   }, { once: true });
 })();
+</script><script>
+const logoMotion = document.getElementById('logo-motion');
+logoMotion.addEventListener('click', () => {
+  const paused = document.querySelector('.client-track').classList.toggle('paused');
+  logoMotion.setAttribute('aria-pressed', String(paused));
+  logoMotion.textContent = paused ? 'Resume logo motion' : 'Pause logo motion';
+});
 </script></body>
 </html>
