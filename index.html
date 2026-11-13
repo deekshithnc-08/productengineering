@@ -159,7 +159,9 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     films[current].classList.remove('active');
     current = index;
     const film = films[current];
-    film.currentTime = 0;
+    film.currentTime = index === 0 && Number.isFinite(film.duration)
+      ? Math.max(0, film.duration - 3)
+      : 0;
     film.classList.add('active');
     film.play().catch(() => {});
   }
@@ -177,7 +179,10 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
   };
   films[0].classList.add('active');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) button.textContent = 'Play videos';
-  else start();
+  else if (films[0].readyState >= 1) start();
+  else films[0].addEventListener('loadedmetadata', () => {
+    if (!timer && button.textContent === 'Pause videos') start();
+  }, { once: true });
 })();
 </script></body>
 </html>
