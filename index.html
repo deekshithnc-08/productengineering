@@ -215,7 +215,7 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     const film = films[current];
     film.currentTime = index === 0 && Number.isFinite(film.duration)
       ? Math.max(0, film.duration - 3)
-      : 0;
+      : index === 1 ? 4 : 0;
     film.classList.add('active');
     film.play().catch(() => {});
   }
