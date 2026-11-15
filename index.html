@@ -69,6 +69,10 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
 .hero .note{max-width:32ch;color:#28354d}
 .mobile-nav summary,.mobile-nav a{min-height:44px}
 }
+.hospitality-graphic{display:none}
+.show-hospitality .hospitality-graphic{display:flex;align-items:center;gap:10px;position:absolute;z-index:2;right:5%;top:28%;padding:10px 14px;border-radius:12px;background:#102448;color:white;font-size:13px;box-shadow:0 6px 20px #10244844}
+.hospitality-graphic b{display:block;color:#c9f7d6}
+@media(max-width:900px){.show-hospitality .hospitality-graphic{top:auto;bottom:18px;right:16px}}
 </style>
 </head>
 <body>
@@ -87,7 +91,7 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
    <div class="actions"><a class="btn" href="#contact">Scope your AI application <span>↗</span></a><a class="btn secondary" href="#industries">Explore industries <span>↓</span></a></div>
    <div class="note">From a focused AI pilot to a production-ready application.</div>
   </div>
-  <div class="hero-screen">
+  <div class="hero-screen"><div class="hospitality-graphic" aria-hidden="true"><span>✓</span><span>Guest requests<b>Towels delivered</b></span></div>
     
     <div class="hero-media"><video class="hero-film" src="manufacturing.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video></div>
   </div>
@@ -215,8 +219,9 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     const film = films[current];
     film.currentTime = index === 0 && Number.isFinite(film.duration)
       ? Math.max(0, film.duration - 3)
-      : index === 1 ? 4 : 0;
+      : index === 1 ? 1 : 0;
     film.classList.add('active');
+    document.querySelector('.hero').classList.toggle('show-hospitality', index === 1);
     film.play().catch(() => {});
   }
   function start() {
