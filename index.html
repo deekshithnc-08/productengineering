@@ -219,7 +219,7 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     const film = films[current];
     film.currentTime = index === 0 && Number.isFinite(film.duration)
       ? Math.max(0, film.duration - 3)
-      : index === 1 ? 1 : 0;
+      : index === 1 ? 1 : 4;
     film.classList.add('active');
     document.querySelector('.hero').classList.toggle('show-hospitality', index === 1);
     film.play().catch(() => {});
