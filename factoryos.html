@@ -84,7 +84,13 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 .sc{max-width:100%;overflow-x:auto}
 @media(max-width:850px){#steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:450px){#steps{grid-template-columns:repeat(2,minmax(0,1fr))}.kp{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style><style>.card:hover{background:var(--card)}#enquiry-heading{scroll-margin-top:150px}@media(max-width:700px){#enquiry-heading{scroll-margin-top:16px}}</style></head><body><div class="w"><section class="story" aria-label="Try FactoryOS"><button type="button" id="story-start">Walk through a sample project →</button><a href="#steps">Explore the workspace ↓</a><p class="story-note">Interactive sample-data demo · Example results for human review · Live AI is not enabled</p></section><div class="top"><div><h1>FactoryOS · Quotation &amp; Risk Workflow</h1><div class="sub">AI reads the enquiry, drafts the quote and flags project risks. A human reviews and approves.</div></div><span class="pill">Sample-data demo</span></div>
+</style><style>.card:hover{background:var(--card)}#enquiry-heading{scroll-margin-top:150px}@media(max-width:700px){#enquiry-heading{scroll-margin-top:16px}}</style><style>
+.workflow-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.workflow-actions .btn{min-height:44px;border-radius:10px}
+.workflow-status:empty{display:none}
+@media(max-width:520px){.workflow-actions .btn{flex:1 1 100%}}
+@media print{.workflow-actions,.workflow-status{display:none}}
+</style></head><body><div class="w"><section class="story" aria-label="Try FactoryOS"><button type="button" id="story-start">Walk through a sample project →</button><a href="#steps">Explore the workspace ↓</a><p class="story-note">Interactive sample-data demo · Example results for human review · Live AI is not enabled</p></section><div class="top"><div><h1>FactoryOS · Quotation &amp; Risk Workflow</h1><div class="sub">AI reads the enquiry, drafts the quote and flags project risks. A human reviews and approves.</div></div><span class="pill">Sample-data demo</span></div>
 
 <div class="steps" id="steps">
 <button data-s="5" class="on">📁 Company data<small>Your knowledge base</small></button>
@@ -117,7 +123,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 <div class="sc"><table><thead><tr><th>#</th><th>Item &amp; specification</th><th>Matched product</th><th class="n">Qty</th><th class="n">Material</th><th class="n">Labour</th><th class="n">Engg.</th><th class="n">Install</th><th class="n">Line total</th><th>OK</th></tr></thead><tbody id="qb"></tbody></table></div>
 <div class="row"><label class="mu">Margin <input type="range" id="mg" min="0" max="40" value="18"> <b id="mgv">18%</b></label><span class="msg" id="tot"></span></div></div>
 <div class="two"><div class="card"><h2>Clarifications needed</h2><ul id="cl"></ul></div><div class="card"><h2>Assumptions made</h2><ul id="as"></ul></div></div>
-<div class="row"><button class="btn p" id="appr">Approve quotation</button><span class="msg" id="am"></span></div></section>
+</section>
 
 <section id="s2" class="hid">
 <div class="kp" id="rk"></div>
@@ -262,7 +268,7 @@ function renderSched(){
 $("fl").onchange=()=>D&&drawRisks();$("mg").oninput=render;$("cg").oninput=render;$("wd").oninput=render;$("ws").onchange=render;
 $("demo").onclick=()=>{D=JSON.parse(JSON.stringify(DEMO));ok={};$("am").textContent="";render();go(1)};
 $("reset").onclick=()=>{$("inp").value=SAMPLE};
-$("appr").onclick=()=>{if(!D)return;const k=D.items.every((_,i)=>ok[i]);$("am").textContent=k?"✓ Approved and ready to issue. High risks should be reviewed first (see Risk register).":"Tick every line item as reviewed before approving."};
+
 $("run").onclick=async()=>{ $("msg").textContent="Live AI is not enabled. Select Load demo result to explore the example quotation."; return;
  if(!SRC.some(s=>(DS[s[0]]||[]).length)){go(5);$("dmsg").textContent="Add company data first so quotations are built from your own records.";return}const b=$("run");b.disabled=true;b.innerHTML='<span class="spin"></span>Analysing…';$("msg").textContent="Reading enquiry…";
  try{
@@ -507,6 +513,36 @@ $("pf").onchange=async()=>{const fs=[...$("pf").files];if(!fs.length)return;$("p
  try{const{text,imgs}=await prep(fs),r=await aiExtract(text,imgs);if(!r||!Array.isArray(r.lines)||!r.lines.length)throw new Error("No line items found");BILL=mkBill(r);m.textContent="Bill read. Review the mapping below, then approve.";renderBill()}catch(e){m.textContent="Could not read the bill: "+(e.message||e.code||"error")+". You can try the sample bill instead."}
  $("pf").value=""};
 renderBill();regBill();
-const NAMES=["Enquiry","Quotation","Risk register","Cost plan","Schedule"];
-[1,2,3,4].forEach(i=>{const d=document.createElement("div");d.className="nav";d.innerHTML=`<button class="btn" data-g="${i-1}">← ${NAMES[i-1]}</button>`+(i<4?`<button class="btn p" data-g="${i+1}">Next: ${NAMES[i+1]} →</button>`:`<button class="btn p" onclick="window.print()">Print / save as PDF</button>`);$("s"+i).appendChild(d);d.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(+b.dataset.g))});
+const workflow = [[5,"Company data"],[0,"Enquiry"],[1,"Quotation"],[2,"Risk register"],[3,"Cost plan"],[4,"Schedule"]];
+workflow.forEach(([step], index) => {
+  const actions = document.createElement("div");
+  actions.className = "workflow-actions";
+  const status = document.createElement("p");
+  status.className = "msg";
+  status.setAttribute("role", "status");
+  function addButton(label, action, primary = false) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = primary ? "btn p" : "btn";
+    button.textContent = label;
+    button.onclick = action;
+    actions.append(button);
+  }
+  const previous = workflow[index - 1];
+  const next = workflow[index + 1];
+  if (previous) addButton("Back: " + previous[1], () => go(previous[0]));
+  addButton("Approve quotation", () => {
+    if (!D || !D.items.length || !D.items.every((_, item) => ok[item])) {
+      go(1);
+      document.querySelector("#s1 .workflow-status").textContent =
+        "Review and tick every quotation line item before approving.";
+      return;
+    }
+    status.textContent = "Quotation approved in this demo.";
+  }, true);
+  if (next) addButton("Next: " + next[1], () => go(next[0]), true);
+  else addButton("Print / save as PDF", () => window.print());
+  status.classList.add("workflow-status");
+  $("s" + step).append(actions, status);
+});
 </script><script>document.getElementById('story-start').onclick=()=>{document.getElementById('dsample').click();document.getElementById('demo').click();document.getElementById('steps').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};</script></body></html>
