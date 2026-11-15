@@ -85,7 +85,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 @media(max-width:850px){#steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:450px){#steps{grid-template-columns:repeat(2,minmax(0,1fr))}.kp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style><style>.card:hover{background:var(--card)}#enquiry-heading{scroll-margin-top:150px}@media(max-width:700px){#enquiry-heading{scroll-margin-top:16px}}</style><style>
-.workflow-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.workflow-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .workflow-actions .btn{min-height:44px;border-radius:10px}
 .workflow-status:empty{display:none}
 @media(max-width:520px){.workflow-actions .btn{flex:1 1 100%}}
@@ -100,12 +100,13 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 <button data-s="2">3 · Risk register<small>Module 2 · before commitment</small></button><button data-s="3">4 · Cost plan<small>Module 3 · estimate</small></button><button data-s="4">5 · Schedule<small>Module 4 · execution plan</small></button></div>
 
 <section id="s5">
+<div class="card"><h2>🤖 Ask your data</h2><div class="mu">Ask about your quotations, costs, customers and invoices. Answers use only the company data loaded in this tab.</div><div class="chips" id="chips"></div><div class="chat" id="chat"></div><div class="row"><input disabled title="Use the sample quick questions above" class="in" id="cq" placeholder="e.g. Which product category has the best win rate?"><button class="btn p" id="cs" disabled>Live chat unavailable</button></div></div>
+<div class="row"><button class="btn p" id="dnext">Continue to enquiry →</button><button class="btn" id="dsample">Load sample company data</button><button class="btn" id="dclear">Clear all</button><span class="msg" id="dmsg"></span></div>
 <div class="card"><h2>Company data · your knowledge base</h2><div class="mu">Upload your own history (CSV, Excel or JSON). Quotations, risks, costs and schedules are generated from this data, so the more you add, the sharper they get. Data stays in this browser.</div></div>
 <div class="kp" id="dk"></div>
 <div class="dg" id="dg"></div>
 <div class="card"><h2>What your data already tells us</h2><ul id="di"></ul></div>
-<div class="card"><h2>🤖 Ask your data</h2><div class="mu">Ask about your quotations, costs, customers and invoices. Answers use only the company data loaded above.</div><div class="chips" id="chips"></div><div class="chat" id="chat"></div><div class="row"><input disabled title="Use the sample quick questions below" class="in" id="cq" placeholder="e.g. Which product category has the best win rate?"><button class="btn p" id="cs" disabled>Live chat unavailable</button></div></div>
-<div class="row"><button class="btn p" id="dnext">Continue to enquiry →</button><button class="btn" id="dsample">Load sample company data</button><button class="btn" id="dclear">Clear all</button><span class="msg" id="dmsg"></span></div></section>
+</section>
 <section id="s6" class="hid">
 <div class="card"><h2>🧾 Purchase bills · AI inward</h2><div class="mu">Upload a supplier bill as PDF, Excel, photo or handwritten scan. AI reads it, maps the vendor and materials, records the inward and drafts the purchase entry for your approval. Approved bills update your company data.</div>
 <div class="row"><label class="btn p">Live bill upload unavailable<input type="file" hidden id="pf" disabled multiple accept=".pdf,.xlsx,.xls,.csv,image/*"></label><button class="btn" id="psmp">Use sample handwritten bill</button><span class="msg" id="pmsg"></span></div><div class="st" id="pfn" style="margin-top:6px"></div></div>
@@ -543,6 +544,6 @@ workflow.forEach(([step], index) => {
   if (next) addButton("Next: " + next[1], () => go(next[0]), true);
   else addButton("Print / save as PDF", () => window.print());
   status.classList.add("workflow-status");
-  $("s" + step).append(actions, status);
+  $("s" + step).prepend(actions, status);
 });
 </script><script>document.getElementById('story-start').onclick=()=>{document.getElementById('dsample').click();document.getElementById('demo').click();document.getElementById('steps').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};</script></body></html>
