@@ -84,7 +84,7 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 .sc{max-width:100%;overflow-x:auto}
 @media(max-width:850px){#steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:450px){#steps{grid-template-columns:repeat(2,minmax(0,1fr))}.kp{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style></head><body><div class="w"><section class="story" aria-label="Try FactoryOS"><button type="button" id="story-start">Walk through a sample project →</button><a href="#steps">Explore the workspace ↓</a><p class="story-note">Interactive sample-data demo · Example results for human review · Live AI is not enabled</p></section><div class="top"><div><h1>FactoryOS · Quotation &amp; Risk Workflow</h1><div class="sub">AI reads the enquiry, drafts the quote and flags project risks. A human reviews and approves.</div></div><span class="pill">Sample-data demo</span></div>
+</style><style>.card:hover{background:var(--card)}#enquiry-heading{scroll-margin-top:150px}@media(max-width:700px){#enquiry-heading{scroll-margin-top:16px}}</style></head><body><div class="w"><section class="story" aria-label="Try FactoryOS"><button type="button" id="story-start">Walk through a sample project →</button><a href="#steps">Explore the workspace ↓</a><p class="story-note">Interactive sample-data demo · Example results for human review · Live AI is not enabled</p></section><div class="top"><div><h1>FactoryOS · Quotation &amp; Risk Workflow</h1><div class="sub">AI reads the enquiry, drafts the quote and flags project risks. A human reviews and approves.</div></div><span class="pill">Sample-data demo</span></div>
 
 <div class="steps" id="steps">
 <button data-s="5" class="on">📁 Company data<small>Your knowledge base</small></button>
@@ -106,8 +106,8 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,sans-serif
 <div id="prv"></div>
 <div class="card"><h2>Purchase register</h2><div class="sc"><table><thead><tr><th>GRN</th><th>Bill no.</th><th>Vendor</th><th>Date</th><th class="n">Amount</th><th>Inward</th><th>Status</th></tr></thead><tbody id="preg"></tbody></table></div></div>
 </section>
-<section id="s0" class="hid"><div class="how"><div><b>① Paste an enquiry</b>Use the sample RFQ or paste your own text.</div><div><b>② Analyse</b>AI drafts the quote, risks, cost plan and schedule.</div><div><b>③ Review</b>Step through the tabs, adjust margin and what-ifs, then approve.</div></div><div class="card"><h2>Customer enquiry / BOQ text</h2><div class="mu" id="dchip" style="margin-bottom:8px"></div>
-<textarea id="inp"></textarea>
+<section id="s0" class="hid"><div class="how"><div><b>① Paste an enquiry</b>Use the sample RFQ or paste your own text.</div><div><b>② Analyse</b>AI drafts the quote, risks, cost plan and schedule.</div><div><b>③ Review</b>Step through the tabs, adjust margin and what-ifs, then approve.</div></div><div class="card"><h2 id="enquiry-heading">Customer enquiry / BOQ text</h2><div class="mu" id="dchip" style="margin-bottom:8px"></div>
+<textarea id="inp" aria-labelledby="enquiry-heading"></textarea>
 <div class="row"><button class="btn p" id="run" disabled title="Live AI is not enabled in this public demo">Live AI unavailable</button><button class="btn" id="demo">Load demo result</button><button class="btn" id="reset">Reset sample</button><span class="msg" id="msg"></span></div>
 <div class="foot">“Analyse with AI” sends the text to Claude and builds the quotation and risk register live. “Load demo result” shows a pre-computed example instantly. In the full product, PDFs, drawings and Excel BOQs are ingested automatically.</div></div></section>
 
@@ -200,7 +200,21 @@ const $=id=>document.getElementById(id);let D=null,ok={};
 const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
 const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 $("inp").value=SAMPLE;
-function go(n){if(n>0&&n<5&&!D){D=JSON.parse(JSON.stringify(DEMO));ok={};render()}document.getElementById("steps").scrollIntoView({block:"start"});[0,1,2,3,4,5].forEach(i=>{$("s"+i).classList.toggle("hid",i!==n);document.querySelector(`[data-s="${i}"]`).classList.toggle("on",i===n)})}
+function go(n) {
+  if (n > 0 && n < 5 && !D) {
+    D = JSON.parse(JSON.stringify(DEMO));
+    ok = {};
+    render();
+  }
+  document.querySelectorAll("#steps button").forEach(button => {
+    const active = Number(button.dataset.s) === n;
+    button.classList.toggle("on", active);
+    button.setAttribute("aria-pressed", String(active));
+    $("s" + button.dataset.s).classList.toggle("hid", !active);
+  });
+  const target = n === 0 ? $("enquiry-heading") : $("steps");
+  target.scrollIntoView({block: "start"});
+}
 document.querySelectorAll("#steps button").forEach(b=>b.onclick=()=>go(+b.dataset.s));
 function line(it){return it.qty*(it.mat+it.lab+it.eng+it.ins)}
 function render(){
