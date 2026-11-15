@@ -69,22 +69,19 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
 .hero .note{max-width:32ch;color:#28354d}
 .mobile-nav summary,.mobile-nav a{min-height:44px}
 }
-.hospitality-graphic{display:none}
-.show-hospitality .hospitality-graphic{display:flex;align-items:center;gap:10px;position:absolute;z-index:2;right:5%;top:28%;padding:10px 14px;border-radius:12px;background:#102448;color:white;font-size:13px;box-shadow:0 6px 20px #10244844}
-.hospitality-graphic b{display:block;color:#c9f7d6}
-@media(max-width:900px){.show-hospitality .hospitality-graphic{top:auto;bottom:18px;right:16px}}
 @media(max-width:900px){
 .hero-film[src="healthcare.mp4"]{object-position:68% center}
 .hero:has(.hero-film.active[src="healthcare.mp4"]) .hero-screen::after{
 background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-gradient(0deg,#f4f7ff,transparent 33%);
 }
 }
+#contact .contact-layout{grid-template-columns:minmax(0,720px);justify-content:center}
 </style>
 </head>
 <body>
 <header class="wrap nav">
   <a class="brand" href="#top" aria-label="NexaSource AI home"><span class="mark">N</span><span>NexaSource AI<small>AI APPLICATIONS</small></span></a>
-  <nav class="navlinks" aria-label="Main navigation"><a href="#industries">Industries</a><a href="#platform">Approach</a><a href="#solutions">Solutions</a><a href="#factoryos">FactoryOS demo</a><a href="#process">How it works</a><a href="#about">Why NexaSource</a></nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="#contact">Discuss a project</a><a href="#industries">Industries</a><a href="#platform">Approach</a><a href="#solutions">Solutions</a><a href="#factoryos">FactoryOS demo</a><a href="#process">How it works</a><a href="#about">Why NexaSource</a></nav></details>
+  <nav class="navlinks" aria-label="Main navigation"><a href="#industries">Industries</a><a href="#platform">Approach</a><a href="#solutions">Solutions</a><a href="#process">How it works</a><a href="#about">Why NexaSource</a></nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="#contact">Discuss a project</a><a href="#industries">Industries</a><a href="#platform">Approach</a><a href="#solutions">Solutions</a><a href="#process">How it works</a><a href="#about">Why NexaSource</a></nav></details>
   <a class="navcta" href="#contact">Discuss a project <span>↗</span></a>
 </header>
 <main id="top">
@@ -97,7 +94,7 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
    <div class="actions"><a class="btn" href="#contact">Scope your AI application <span>↗</span></a><a class="btn secondary" href="#industries">Explore industries <span>↓</span></a></div>
    <div class="note">From a focused AI pilot to a production-ready application.</div>
   </div>
-  <div class="hero-screen"><div class="hospitality-graphic" aria-hidden="true"><span>✓</span><span>Guest requests<b>Towels delivered</b></span></div>
+  <div class="hero-screen">
     
     <div class="hero-media"><video class="hero-film" src="manufacturing.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video></div>
   </div>
@@ -118,10 +115,7 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
   </ul></div></div>
 </section>
 
-<div class="wrap metrics">
- <div class="metric"><strong>Industry-focused</strong><span>Manufacturing, Healthcare & Hospitality</span></div>
- <div class="metric"><strong>Outcome-led</strong><span>Milestones tied to business value</span></div>
-</div>
+
 <section id="industries">
  <div class="wrap">
   <div class="section-head"><div class="kicker">01 / Industries</div><h2>AI applications for the <span class="gradient">industries we build for.</span></h2><p>We design and build AI-driven applications for three focus domains, each shaped around the real workflows, systems and data of that industry.</p></div>
@@ -143,7 +137,7 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
  </div>
 </section>
 
-<section id="factoryos"><div class="wrap"><div class="band"><div><div class="kicker">Manufacturing / Interactive demo</div><h2>Meet FactoryOS.<br>From enquiry to execution.</h2><p>Explore quotations, project risks, cost estimates, execution schedules and purchase-bill review in one manufacturing workspace. Try the included sample company data and review the workflow at your own pace.</p><p class="note">Interactive MVP with example results. Live AI analysis is not enabled in this public demo.</p></div><a class="btn" href="factoryos.html">Try FactoryOS demo ↗</a></div></div></section>
+
 <section id="solutions">
  <div class="wrap">
   <div class="section-head"><div class="kicker">03 / What we build</div><h2>New-age technology.<br>Practical business impact.</h2><p>Start with a well-defined business challenge. We design and build the AI application around it.</p></div>
@@ -151,8 +145,6 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
    <article class="card"><div class="num">AI & AGENTS</div><h3>AI workflow automation</h3><p>AI assistants, agentic workflows, document intelligence, customer support automation and internal copilots.</p></article>
    <article class="card"><div class="num">DATA & INTELLIGENCE</div><h3>Data engineering & analytics</h3><p>Data pipelines, business dashboards, retrieval-augmented generation (RAG), knowledge search and decision support.</p></article>
    <article class="card"><div class="num">PRODUCT ENGINEERING</div><h3>Modern software delivery</h3><p>AI-enabled product features, web platforms, integrations, API development, cloud modernisation and MVPs.</p></article>
-   <article class="card"><div class="num">CLOUD & PLATFORM</div><h3>Cloud and DevOps</h3><p>Cloud architecture, deployment automation, observability, platform engineering and cost optimisation.</p></article>
-   <article class="card"><div class="num">QUALITY & TRUST</div><h3>Testing, security & governance</h3><p>AI evaluation, test automation, data protection by design, model monitoring and responsible deployment support.</p></article>
    <article class="card"><div class="num">INTEGRATION & SUPPORT</div><h3>Integration and continuous improvement</h3><p>Connect applications to your ERP, plant systems, hospital information systems, property management systems and IoT data—then monitor, refine and extend after launch.</p></article>
   </div>
  </div>
@@ -185,7 +177,6 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
 </section>
 <section id="contact">
  <div class="wrap contact-layout">
-  <div><div class="kicker">06 / Let’s talk</div><h2 style="font-size:clamp(32px,4vw,46px);line-height:1.08;letter-spacing:-.05em">Make your next technology move count.</h2><p style="color:var(--muted)">Tell us what you want to automate or build. We’ll use the details to prepare a focused first conversation.</p><div class="contact-card"><h3>Good starting points</h3><p>• An AI workflow you want to automate</p><p>• An AI application for your factory, hospital or hotel</p><p>• A product or platform you need to build</p><p>• A data or analytics challenge to solve</p></div></div>
   <div class="contact-card">
    <form id="leadForm">
     <div class="formgrid">
@@ -196,7 +187,7 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
      <textarea name="message" placeholder="Briefly describe your challenge, target timeline and what success looks like." aria-label="Project details" required></textarea>
      <button class="btn full" type="submit">Prepare enquiry <span>↗</span></button>
     </div>
-    <p class="note" id="formStatus">Demo form: connect this form to your preferred CRM or email service before publishing.</p>
+
    </form>
   </div>
  </div>
@@ -210,7 +201,6 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
  const data = Object.fromEntries(new FormData(this).entries());
  const subject = encodeURIComponent('NexaSource AI enquiry — ' + (data.interest || 'New project'));
  const body = encodeURIComponent('Name: '+data.name+'\nCompany: '+data.company+'\nEmail: '+data.email+'\nInterest: '+data.interest+'\n\nProject details:\n'+data.message);
- document.getElementById('formStatus').textContent = 'Your email draft is ready. Connect a business email address or CRM to receive enquiries automatically.';
  window.location.href = 'mailto:hello@nexasource.ai?subject='+subject+'&body='+body;
 });
 </script>
@@ -227,7 +217,6 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
       ? Math.max(0, film.duration - 3)
       : index === 1 ? 1 : 4;
     film.classList.add('active');
-    document.querySelector('.hero').classList.toggle('show-hospitality', index === 1);
     film.play().catch(() => {});
   }
   function start() {
