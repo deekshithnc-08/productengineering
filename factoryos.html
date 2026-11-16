@@ -114,10 +114,10 @@ input,select{accent-color:var(--ac)}
 <div id="prv"></div>
 <div class="card"><h2>Purchase register</h2><div class="sc"><table><thead><tr><th>GRN</th><th>Bill no.</th><th>Vendor</th><th>Date</th><th class="n">Amount</th><th>Inward</th><th>Status</th></tr></thead><tbody id="preg"></tbody></table></div></div>
 </section>
-<section id="s0" class="hid"><div class="how"><div><b>① Paste an enquiry</b>Use the sample RFQ or paste your own text.</div><div><b>② Analyse</b>AI drafts the quote, risks, cost plan and schedule.</div><div><b>③ Review</b>Step through the tabs, adjust margin and what-ifs, then approve.</div></div><div class="card"><h2 id="enquiry-heading">Customer enquiry / BOQ text</h2><div class="mu" id="dchip" style="margin-bottom:8px"></div>
+<section id="s0" class="hid"><div class="how"><div><b>① Paste an enquiry</b>Use the sample RFQ or paste your own text.</div><div><b>② Load demo result</b>Open the sample quotation, risks, cost plan and schedule.</div><div><b>③ Review</b>Step through the tabs, adjust margin and what-ifs, then approve.</div></div><div class="card"><h2 id="enquiry-heading">Customer enquiry / BOQ text</h2><div class="mu" id="dchip" style="margin-bottom:8px"></div>
 <textarea id="inp" aria-labelledby="enquiry-heading"></textarea>
-<div class="row"><button class="btn p" id="run" disabled title="Live AI is not enabled in this public demo">Live AI unavailable</button><button class="btn" id="demo">Load demo result</button><button class="btn" id="reset">Reset sample</button><span class="msg" id="msg"></span></div>
-<div class="foot">“Analyse with AI” sends the text to Claude and builds the quotation and risk register live. “Load demo result” shows a pre-computed example instantly. In the full product, PDFs, drawings and Excel BOQs are ingested automatically.</div></div></section>
+<div class="row"><button class="btn p" id="demo">Load demo result</button><button class="btn" id="reset">Reset sample</button><span class="msg" id="msg"></span></div>
+<div class="foot">Load demo result opens a precomputed quotation for the sample enquiry. Reset sample restores the original enquiry text.</div></div></section>
 
 <section id="s1" class="hid">
 <div class="kp" id="kp"></div>
@@ -268,17 +268,9 @@ function renderSched(){
  $("bn").innerHTML=bn+(D.bott||[]).map(x=>`<li>${esc(x)}</li>`).join("");
 }
 $("fl").onchange=()=>D&&drawRisks();$("mg").oninput=render;$("cg").oninput=render;$("wd").oninput=render;$("ws").onchange=render;
-$("demo").onclick=()=>{D=JSON.parse(JSON.stringify(DEMO));ok={};$("am").textContent="";render();go(1)};
-$("reset").onclick=()=>{$("inp").value=SAMPLE};
+$("demo").onclick=()=>{D=JSON.parse(JSON.stringify(DEMO));ok={};document.querySelector("#s1 .workflow-status").textContent="";render();go(1)};
+$("reset").onclick=()=>{$("inp").value=SAMPLE;$("msg").textContent="Sample enquiry restored."};
 
-$("run").onclick=async()=>{ $("msg").textContent="Live AI is not enabled. Select Load demo result to explore the example quotation."; return;
- if(!SRC.some(s=>(DS[s[0]]||[]).length)){go(5);$("dmsg").textContent="Add company data first so quotations are built from your own records.";return}const b=$("run");b.disabled=true;b.innerHTML='<span class="spin"></span>Analysing…';$("msg").textContent="Reading enquiry…";
- try{
-  const resp=await fetch("api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({enquiry:$("inp").value,context:ctx()})});const r=await resp.json();if(!resp.ok||r.error)throw new Error(r.error||"Analysis failed");
-  if(!r||!Array.isArray(r.items)||!Array.isArray(r.risks))throw new Error("Unexpected AI output");
-  r.cost=r.cost||[];r.tasks=r.tasks||[];r.miles=r.miles||[];r.bott=r.bott||[];r.clar=r.clar||[];r.assum=r.assum||[];D=r;ok={};render();go(1);$("msg").textContent="";
- }catch(e){$("msg").textContent="Live AI unavailable here – showing demo result instead.";D=JSON.parse(JSON.stringify(DEMO));ok={};render();go(1)}
- b.disabled=false;b.textContent="Analyse with AI"};
 const SRC=[["items","Item list / catalogue","📦","code, name, unit, material_cost"],["labour","Labour and service rates","👷","activity, unit, rate"],["costing","Costing sheets","🧮","item, material, labour, engineering, installation, overhead_pct"],["quotes","Previous quotations","📄","quote_no, customer, date, scope, value, margin_pct, status"],["orders","Sales orders","🧾","so_no, quote_no, customer, value, delivery_days, status"],["customers","Customer details","🏢","name, city, payment_terms, credit_days"],["purchase","Purchase invoices","🛒","date, vendor, item, qty, rate, unit"],["salesinv","Sales invoices","💰","invoice_no, customer, date, amount"]];
 const SMP={items:`code,name,category,unit,material_cost,lead_time_days,notes
 HD-PR-5000,Heavy-duty pallet racking bay 2700x1100x5000,Racking,bay,41500,25,4 levels 1500 kg per level
