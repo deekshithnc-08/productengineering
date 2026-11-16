@@ -113,6 +113,14 @@ html{overscroll-behavior-x:none}
 .assembly-view{position:relative;aspect-ratio:320/212;background:radial-gradient(ellipse at 50% 42%,#fff, #e4edff);touch-action:pan-y;cursor:grab;user-select:none}
 .assembly-view:active{cursor:grabbing}
 .assembly-view svg{position:absolute;inset:0;width:100%;height:100%}
+@media(prefers-reduced-motion:no-preference){
+  .assembly-view [data-form].scene-enter{animation:scene-enter 340ms cubic-bezier(.2,.7,.2,1) both}
+}
+@keyframes scene-enter{
+  from{opacity:.55;transform:translateX(var(--scene-offset,0px))}
+  to{opacity:1;transform:translateX(0)}
+}
+
 .assembly-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;padding:12px 12px 4px;font-size:.82rem}
 .factory-dashboard{margin:0 12px 12px;padding:12px;border-radius:12px;background:#13284f;color:#fff}
 .factory-dashboard-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 10px;padding-bottom:8px;border-bottom:1px solid #456087}
@@ -383,10 +391,14 @@ document.querySelectorAll('.assembly').forEach(assembly => {
       part.setAttribute('transform', `translate(${part.dataset.x * offset} ${part.dataset.y * offset})`);
     });
     const index = Math.round(target * (stages.length - 1));
-    forms.forEach((form, i) => {
-      form.setAttribute('opacity', i === index ? '1' : '0');
-    });
     if (index !== currentStage) {
+      const previousStage = currentStage;
+      forms.forEach((form, i) => {
+        const active = i === index;
+        form.setAttribute('opacity', active ? '1' : '0');
+        form.classList.toggle('scene-enter', active && previousStage >= 0);
+        if (active) form.style.setProperty('--scene-offset', index > previousStage ? '12px' : '-12px');
+      });
       currentStage = index;
       caption.textContent = `${index + 1} / ${stages.length} · ${stages[index]}`;
       ticks.forEach((tick, i) => tick.classList.toggle('reached', i <= index));
