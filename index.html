@@ -111,7 +111,17 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
 .assembly .assembly-story p{margin:5px 0 0;font-size:.85rem;line-height:1.45}
 .assembly-view{position:relative;aspect-ratio:320/212;background:radial-gradient(ellipse at 50% 42%,#fff, #e4edff);touch-action:pan-y;cursor:grab;user-select:none}
 .assembly-view:active{cursor:grabbing}
-.assembly-view svg,.assembly-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;padding:12px 12px 4px;font-size:.82rem}
+.assembly-view svg{position:absolute;inset:0;width:100%;height:100%}
+.assembly-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;padding:12px 12px 4px;font-size:.82rem}
+.factory-dashboard{margin:0 12px 12px;padding:12px;border-radius:12px;background:#13284f;color:#fff}
+.factory-dashboard-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 10px;padding-bottom:8px;border-bottom:1px solid #456087}
+.factory-dashboard-head span{font-size:.72rem;color:#c7daf8}
+.factory-kpi{display:grid;gap:4px;margin:10px 0}
+.factory-kpi span{font-size:.78rem;color:#dbe9ff}
+.factory-kpi strong{font-size:1.65rem;line-height:1.15;font-variant-numeric:tabular-nums}
+.factory-kpi progress{width:100%;height:8px;accent-color:#87baff}
+.factory-dashboard-note{background:#233b65;border-radius:8px;padding:8px;font-size:.78rem}
+.assembly .factory-dashboard-note p{margin:3px 0 0;color:#e1ecff;line-height:1.4}
 .assembly-meta span{color:var(--accent)}
 .assembly-scroll{margin:0 12px;overflow-x:scroll;overflow-y:hidden;scrollbar-color:var(--accent) #dbe5fb;scrollbar-width:auto;overscroll-behavior-x:contain}
 .assembly-scroll div{width:calc(100% + 320px);height:8px}
@@ -178,14 +188,19 @@ background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-g
   <div class="cards">
    <article class="card">
     <div class="assembly" data-stages="Raw metal stock enters the line|The blank is cut to length|A fixture holds the blank steady|A drill opens the mounting hole|The edges are rounded and deburred|A surface finish protects the part|Inspection checks the hole and edges|The finished bracket is packed|Finished bracket ready for dispatch">
-      <div class="assembly-story"><h4>From raw metal to finished bracket</h4><p>Swipe to follow a metal blank through cutting, machining, finishing, and inspection.</p></div>
+      <div class="assembly-story"><h4>From raw metal to finished bracket</h4><p>Move through a sample order to see the part and its FactoryOS dashboard update together.</p></div>
       <div class="assembly-view" aria-label="Isometric manufacturing journey from raw stock to a finished bracket">
         <svg viewBox="0 0 320 212" aria-hidden="true"><path d="m48 153 117-41 109 38-117 41z" fill="#d5e6ff"/><g data-form="0"><path d="M72 123l96-32 78 26-96 32z" fill="#9aaabd"/><path d="M72 123l78 26v15l-78-26zm78 26l96-32v15l-96 32z" fill="#566b85"/></g><g data-form="1" opacity="0"><path d="M102 122l70-24 49 17-70 24z" fill="#a3b9d4"/><path d="M102 122l49 17v13l-49-17zm49 17l70-24v13l-70 24z" fill="#597394"/><path d="M104 108l68-23" stroke="#1747a4" stroke-dasharray="4 4"/></g><g data-form="2" opacity="0"><path d="M97 117l61-20 62 20-61 20z" fill="#a3b9d4"/><path d="M89 116l13-5v24l-13 4zm127 1l13-5v24l-13 4z" fill="#264e86"/></g><g data-form="3" opacity="0"><path d="M96 122l65-22 59 19-65 22z" fill="#92afd1"/><ellipse cx="157" cy="121" rx="13" ry="5" fill="#203d63"/><path d="M152 60h10v44l-5 9-5-9z" fill="#244f86"/></g><g data-form="4" opacity="0"><path d="M103 126q-9-4 0-8l51-18q8-3 16 0l44 15q9 4 0 8l-51 18q-8 3-16 0z" fill="#8eafd2"/><ellipse cx="157" cy="120" rx="13" ry="5" fill="#243f65"/></g><g data-form="5" opacity="0"><path d="M105 119l50-17q8-3 16 0l40 14q10 4 0 8l-50 17q-7 3-15 0l-41-14q-10-4 0-8z" fill="#487cba" stroke="#b8dfff" stroke-width="2"/><ellipse cx="158" cy="121" rx="13" ry="5" fill="#172e4e"/></g><g data-form="6" opacity="0"><path d="M105 119l56-19 59 20-56 20z" fill="#487cba"/><ellipse cx="158" cy="120" rx="13" ry="5" fill="#172e4e"/><path d="M118 78v30m75-30v30m-74-19h73" stroke="#2c8289" stroke-dasharray="4 3"/><circle cx="217" cy="80" r="13" fill="#23604c"/><path d="m210 80 5 5 8-10" stroke="white" fill="none" stroke-width="2"/></g><g data-form="7" opacity="0"><path d="M89 121l74-26 69 24-74 25z" fill="#ecd6b4"/><path d="M89 121l69 23v23l-69-23zm69 23l74-25v23l-74 25z" fill="#b08354"/><path d="M109 119l52-17 50 17-52 18z" fill="#487cba"/><ellipse cx="158" cy="119" rx="12" ry="5" fill="#172e4e"/></g><g data-form="8" opacity="0"><path d="M96 121l58-20q9-3 17 0l48 16v10l-60 21-63-20z" fill="#386ba5"/><path d="M96 121l58-20q9-3 17 0l48 16q7 3 0 6l-58 20q-6 2-12 0l-53-18q-5-2 0-4z" fill="#84b3e8" stroke="#b8dfff" stroke-width="2"/><ellipse cx="158" cy="120" rx="13" ry="5" fill="#172e4e"/><path d="m225 81 6 6 11-14" fill="none" stroke="#23604c" stroke-width="4"/></g></svg>
       </div>
-      <div class="assembly-meta"><span>Swipe to build</span></div>
+      <div class="assembly-meta"><span>Swipe to track the order</span></div>
       <div class="assembly-scroll" tabindex="0" aria-label="Raw metal to finished bracket progress"><div aria-hidden="true"></div></div>
       <div class="assembly-ticks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
       <p class="assembly-caption" aria-live="polite">1 / 9 · Raw metal stock enters the line</p>
+      <div class="factory-dashboard">
+        <div class="factory-dashboard-head"><strong>FactoryOS</strong><span>Sample order · A-104</span></div>
+        <div class="factory-kpi"><span data-kpi-label>Raw material received</span><strong data-kpi-value>120 / 120</strong><progress data-kpi-progress aria-label="Raw material received" max="100" value="100"></progress></div>
+        <div class="factory-dashboard-note"><strong data-kpi-signal>Delivery matched</strong><p data-kpi-action>FactoryOS checks the received quantity against the purchase order and updates available stock.</p></div>
+      </div>
     </div>
     <div class="num"><span class="industry-icon" aria-hidden="true">⚙</span>MANUFACTURING</div><h3>Smarter, safer, more efficient operations</h3>
     <ul class="industry-benefits" aria-label="Benefits"><li>Less downtime</li><li>Fewer defects</li><li>Safer operations</li></ul>
@@ -322,6 +337,17 @@ document.querySelectorAll('.mobile-nav a').forEach(link => {
   link.addEventListener('click', () => { link.closest('details').open = false; });
 });
 </script><script>
+const factoryStages = [
+  ['Raw material received', '120 / 120', 100, 'Delivery matched', 'FactoryOS checks the received quantity against the purchase order and updates available stock.'],
+  ['Warehouse stock', '80%', 80, 'Stock reserved', 'FactoryOS reserves 120 blanks for order A-104 and shows what remains available for other jobs.'],
+  ['Production capacity', '90%', 90, 'Schedule checked', 'FactoryOS compares the job with available machine time and suggests an open slot at the next station.'],
+  ['Machining progress', '60 / 120', 50, 'Delay flagged', 'FactoryOS flags a tool change that could delay the batch and shows the planner where to adjust the schedule.'],
+  ['Deburring complete', '120 / 120', 100, 'Handoff ready', 'FactoryOS records completion and adds the batch to the finishing queue.'],
+  ['Finishing complete', '120 / 120', 100, 'Inspection queued', 'FactoryOS attaches the finish record to the batch and brings up the inspection checklist.'],
+  ['First-pass quality', '118 / 120', 98.3, 'Two parts held', 'FactoryOS holds two parts for review and routes them to rework while the accepted parts move ahead.'],
+  ['Order packed', '120 / 120', 100, 'Rework cleared', 'After the two parts pass reinspection, FactoryOS confirms the full order is packed and ready to ship.'],
+  ['Delivered on time', '100%', 100, 'Order closed', 'FactoryOS matches delivery confirmation to the promised date and closes order A-104.']
+];
 document.querySelectorAll('.assembly').forEach(assembly => {
   const viewer = assembly.querySelector('.assembly-view');
   const scroll = assembly.querySelector('.assembly-scroll');
@@ -330,6 +356,12 @@ document.querySelectorAll('.assembly').forEach(assembly => {
   const caption = assembly.querySelector('.assembly-caption');
   const stages = assembly.dataset.stages.split('|');
   const forms = assembly.querySelectorAll('[data-form]');
+  const dashboard = assembly.querySelector('.factory-dashboard');
+  const metricLabel = dashboard?.querySelector('[data-kpi-label]');
+  const metricValue = dashboard?.querySelector('[data-kpi-value]');
+  const metricProgress = dashboard?.querySelector('[data-kpi-progress]');
+  const metricSignal = dashboard?.querySelector('[data-kpi-signal]');
+  const metricAction = dashboard?.querySelector('[data-kpi-action]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const clamp = value => Math.max(0, Math.min(1, value));
   const travel = () => scroll.scrollWidth - scroll.clientWidth;
@@ -352,11 +384,20 @@ document.querySelectorAll('.assembly').forEach(assembly => {
     forms.forEach((form, i) => {
       form.setAttribute('opacity', String(clamp(1 - Math.abs(stage - i))));
     });
-    const index = Math.floor(stage);
+    const index = Math.round(stage);
     if (index !== currentStage) {
       currentStage = index;
       caption.textContent = `${index + 1} / ${stages.length} · ${stages[index]}`;
       ticks.forEach((tick, i) => tick.classList.toggle('reached', i <= index));
+      if (dashboard) {
+        const [label, value, percent, signal, action] = factoryStages[index];
+        metricLabel.textContent = label;
+        metricValue.textContent = value;
+        metricProgress.value = percent;
+        metricProgress.setAttribute('aria-label', label);
+        metricSignal.textContent = signal;
+        metricAction.textContent = action;
+      }
     }
     if (rendered !== target) schedule();
   }
