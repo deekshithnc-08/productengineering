@@ -70,8 +70,8 @@ section{padding:76px 0}.hero{padding:82px 0 66px;background:radial-gradient(elli
 .mobile-nav summary,.mobile-nav a{min-height:44px}
 }
 @media(max-width:900px){
-.hero-film[src="healthcare.mp4"]{object-position:68% center}
-.hero:has(.hero-film.active[src="healthcare.mp4"]) .hero-screen::after{
+.hero-film[data-sector="healthcare"]{object-position:68% center}
+.hero:has(.hero-film.active[data-sector="healthcare"]) .hero-screen::after{
 background:linear-gradient(90deg,#f4f7ffdd,#f4f7ff9c 43%,#f4f7ff00 78%),linear-gradient(0deg,#f4f7ff,transparent 33%);
 }
 }
@@ -290,7 +290,7 @@ section[id]{scroll-margin-top:96px}
   </div>
   <div class="hero-screen">
     
-    <div class="hero-media"><video class="hero-film active" muted playsinline loop preload="auto" aria-hidden="true"><source media="(max-width: 600px)" src="manufacturing-mobile.mp4?v=b875117b" type="video/mp4"><source src="manufacturing.mp4?v=bac537bc" type="video/mp4"></video><video class="hero-film" src="hospitality.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video><video class="hero-film" src="healthcare.mp4" muted playsinline loop preload="auto" aria-hidden="true"></video></div>
+    <div class="hero-media"><video class="hero-film active" muted playsinline loop preload="auto" aria-hidden="true"><source media="(max-width: 600px)" src="manufacturing-mobile.mp4?v=b875117b" type="video/mp4"><source src="manufacturing.mp4?v=bac537bc" type="video/mp4"></video><video class="hero-film" data-sector="hospitality" muted playsinline loop preload="auto" aria-hidden="true"><source media="(max-width: 600px)" src="hospitality-mobile.mp4?v=22317794" type="video/mp4"><source src="hospitality.mp4" type="video/mp4"></video><video class="hero-film" data-sector="healthcare" muted playsinline loop preload="auto" aria-hidden="true"><source media="(max-width: 600px)" src="healthcare-mobile.mp4?v=09a9eb2c" type="video/mp4"><source src="healthcare.mp4" type="video/mp4"></video></div>
   </div>
  </div>
 </section>
@@ -443,9 +443,9 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
   const films = [...document.querySelectorAll('.hero-film')];
   const mobileHero = matchMedia('(max-width: 600px)');
   mobileHero.addEventListener('change', () => {
-    films[0].load();
-    if (current === 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      films[0].play().catch(() => {});
+    films.forEach(film => film.load());
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      films[current].play().catch(() => {});
     }
   });
   let current = 0;
@@ -454,10 +454,10 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     films[current].classList.remove('active');
     current = index;
     const film = films[current];
-    film.currentTime = index === 0 ? 0 : index === 1 ? 1 : 4;
+    film.currentTime = mobileHero.matches || index === 0 ? 0 : index === 1 ? 1 : 4;
     film.classList.add('active');
     film.play().catch(() => {});
-    const displayTime = index === 0 && Number.isFinite(film.duration) ? film.duration * 1000 : 3000;
+    const displayTime = (mobileHero.matches || index === 0) && Number.isFinite(film.duration) ? film.duration * 1000 : mobileHero.matches ? 10000 : 3000;
     setTimeout(() => show((current + 1) % films.length), displayTime);
   }
   function start() {
